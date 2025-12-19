@@ -1,0 +1,259 @@
+.profile-container {
+  padding: 0;
+  background: var(--glassdoor-gray-bg);
+  min-height: calc(100vh - 64px - 200px);
+}
+
+.profile-header {
+  background: var(--glassdoor-white);
+  padding: 32px 24px;
+  border-bottom: 1px solid var(--glassdoor-border);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 16px;
+  color: var(--glassdoor-green);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.back-link:hover {
+  background-color: var(--glassdoor-green-light);
+  color: var(--glassdoor-green-dark);
+}
+
+.profile-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--glassdoor-gray);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.profile-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.profile-card {
+  background: var(--glassdoor-white);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--glassdoor-shadow);
+  border: 1px solid var(--glassdoor-border);
+}
+
+.profile-avatar {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--glassdoor-border);
+}
+
+.avatar-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--glassdoor-green) 0%, var(--glassdoor-green-dark) 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0 auto 16px;
+}
+
+.profile-avatar h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--glassdoor-gray);
+  margin: 0 0 8px 0;
+}
+
+.profile-email {
+  font-size: 16px;
+  color: var(--glassdoor-gray-light);
+  margin: 0;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-item label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--glassdoor-gray-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-item p {
+  font-size: 16px;
+  color: var(--glassdoor-gray);
+  margin: 0;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--glassdoor-green-light);
+  color: var(--glassdoor-green-dark);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--glassdoor-border);
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-form label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--glassdoor-gray);
+}
+
+.profile-form input {
+  padding: 12px;
+  border: 1px solid var(--glassdoor-border);
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.profile-form input:focus {
+  outline: none;
+  border-color: var(--glassdoor-green);
+  box-shadow: 0 0 0 3px var(--glassdoor-green-light);
+}
+
+.profile-form input:disabled {
+  background: var(--glassdoor-gray-bg);
+  cursor: not-allowed;
+}
+
+.profile-form small {
+  font-size: 12px;
+  color: var(--glassdoor-gray-light);
+}
+
+.profile-stats {
+  background: var(--glassdoor-white);
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--glassdoor-shadow);
+  border: 1px solid var(--glassdoor-border);
+}
+
+.profile-stats h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--glassdoor-gray);
+  margin: 0 0 24px 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--glassdoor-gray-bg);
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid var(--glassdoor-border);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--glassdoor-shadow);
+}
+
+.stat-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--glassdoor-green);
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--glassdoor-gray-light);
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .profile-header {
+    padding: 24px 16px;
+  }
+
+  .profile-header h1 {
+    font-size: 28px;
+  }
+
+  .profile-content {
+    padding: 24px 16px;
+  }
+
+  .profile-card {
+    padding: 24px;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+
+  .profile-actions button {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

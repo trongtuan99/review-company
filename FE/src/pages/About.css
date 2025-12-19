@@ -1,0 +1,193 @@
+.about-container {
+  padding: 0;
+  background: var(--glassdoor-gray-bg);
+  min-height: calc(100vh - 64px - 200px);
+}
+
+.about-header {
+  background: var(--glassdoor-white);
+  padding: 48px 24px;
+  border-bottom: 1px solid var(--glassdoor-border);
+  text-align: center;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 24px;
+  color: var(--glassdoor-green);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.back-link:hover {
+  background-color: var(--glassdoor-green-light);
+  color: var(--glassdoor-green-dark);
+}
+
+.about-header h1 {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--glassdoor-gray);
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+}
+
+.about-subtitle {
+  font-size: 20px;
+  color: var(--glassdoor-gray-light);
+  margin: 0;
+}
+
+.about-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.about-section {
+  margin-bottom: 48px;
+  background: var(--glassdoor-white);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--glassdoor-shadow);
+  border: 1px solid var(--glassdoor-border);
+}
+
+.about-section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--glassdoor-gray);
+  margin: 0 0 24px 0;
+}
+
+.about-section p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--glassdoor-gray);
+  margin-bottom: 16px;
+}
+
+.mission-list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+}
+
+.mission-list li {
+  padding: 12px 0 12px 32px;
+  position: relative;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--glassdoor-gray);
+}
+
+.mission-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--glassdoor-green);
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.feature-card {
+  background: var(--glassdoor-gray-bg);
+  padding: 32px 24px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid var(--glassdoor-border);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px var(--glassdoor-shadow);
+  border-color: var(--glassdoor-green-light);
+}
+
+.feature-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.feature-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--glassdoor-gray);
+  margin: 0 0 12px 0;
+}
+
+.feature-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--glassdoor-gray-light);
+  margin: 0;
+}
+
+.contact-info {
+  margin-top: 24px;
+}
+
+.contact-info p {
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.contact-info a {
+  color: var(--glassdoor-green);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.contact-info a:hover {
+  color: var(--glassdoor-green-dark);
+  text-decoration: underline;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .about-header {
+    padding: 32px 16px;
+  }
+
+  .about-header h1 {
+    font-size: 32px;
+  }
+
+  .about-subtitle {
+    font-size: 16px;
+  }
+
+  .about-content {
+    padding: 24px 16px;
+  }
+
+  .about-section {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .about-section h2 {
+    font-size: 24px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './Navbar.css';
@@ -5,10 +6,13 @@ import './Navbar.css';
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
+  const [showMenu, setShowMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+    setShowUserMenu(false);
   };
 
   return (
@@ -17,16 +21,50 @@ const Navbar = () => {
         <Link to="/" className="navbar-brand">
           Review Company
         </Link>
-        <div className="navbar-menu">
+        
+        {/* Desktop Menu */}
+        <div className="navbar-menu desktop-menu">
+          <Link to="/companies" className="navbar-link">
+            Tất cả công ty
+          </Link>
+          <Link to="/about" className="navbar-link">
+            Về chúng tôi
+          </Link>
+          <Link to="/faq" className="navbar-link">
+            FAQ
+          </Link>
           {isAuthenticated ? (
-            <>
-              <span className="navbar-user">
-                Xin chào, {user?.first_name} {user?.last_name}
-              </span>
-              <button onClick={handleLogout} className="btn-logout">
-                Đăng xuất
+            <div className="user-menu-wrapper">
+              <button
+                className="user-menu-trigger"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+              >
+                <span className="user-avatar">
+                  {user?.first_name?.[0]?.toUpperCase() || 'U'}
+                </span>
+                <span className="user-name">
+                  {user?.first_name} {user?.last_name}
+                </span>
+                <span className="dropdown-icon">▼</span>
               </button>
-            </>
+              {showUserMenu && (
+                <div className="user-menu-dropdown">
+                  <Link
+                    to="/profile"
+                    className="user-menu-item"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    👤 Hồ sơ của tôi
+                  </Link>
+                  <button
+                    className="user-menu-item"
+                    onClick={handleLogout}
+                  >
+                    🚪 Đăng xuất
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <Link to="/login" className="navbar-link">
@@ -38,7 +76,77 @@ const Navbar = () => {
             </>
           )}
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setShowMenu(!showMenu)}
+          aria-label="Toggle menu"
+        >
+          {showMenu ? '✕' : '☰'}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {showMenu && (
+        <div className="mobile-menu">
+          <Link
+            to="/companies"
+            className="mobile-menu-item"
+            onClick={() => setShowMenu(false)}
+          >
+            Tất cả công ty
+          </Link>
+          <Link
+            to="/about"
+            className="mobile-menu-item"
+            onClick={() => setShowMenu(false)}
+          >
+            Về chúng tôi
+          </Link>
+          <Link
+            to="/faq"
+            className="mobile-menu-item"
+            onClick={() => setShowMenu(false)}
+          >
+            FAQ
+          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link
+                to="/profile"
+                className="mobile-menu-item"
+                onClick={() => setShowMenu(false)}
+              >
+                Hồ sơ của tôi
+              </Link>
+              <button
+                className="mobile-menu-item"
+                onClick={handleLogout}
+              >
+                Đăng xuất
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="mobile-menu-item"
+                onClick={() => setShowMenu(false)}
+              >
+                Đăng nhập
+              </Link>
+              <Link
+                to="/register"
+                className="mobile-menu-item btn-primary"
+                onClick={() => setShowMenu(false)}
+              >
+                Đăng ký
+              </Link>
+            </>
+          )}
+        </div>
+      )}
     </nav>
   );
 };

@@ -44,6 +44,149 @@
   gap: 16px;
 }
 
+.desktop-menu {
+  display: flex;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--glassdoor-gray);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+  background: var(--glassdoor-gray-bg);
+  color: var(--glassdoor-green);
+}
+
+.user-menu-wrapper {
+  position: relative;
+}
+
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--glassdoor-gray-bg);
+  border: 1px solid var(--glassdoor-border);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  color: var(--glassdoor-gray);
+}
+
+.user-menu-trigger:hover {
+  background: var(--glassdoor-white);
+  border-color: var(--glassdoor-green);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--glassdoor-green) 0%, var(--glassdoor-green-dark) 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.user-name {
+  font-weight: 500;
+}
+
+.dropdown-icon {
+  font-size: 10px;
+  color: var(--glassdoor-gray-light);
+  transition: transform 0.2s ease;
+}
+
+.user-menu-wrapper:hover .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--glassdoor-white);
+  border: 1px solid var(--glassdoor-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--glassdoor-shadow);
+  min-width: 200px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.user-menu-item {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--glassdoor-gray);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.user-menu-item:hover {
+  background: var(--glassdoor-gray-bg);
+  color: var(--glassdoor-green);
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--glassdoor-white);
+  border-top: 1px solid var(--glassdoor-border);
+  padding: 16px 24px;
+  gap: 8px;
+}
+
+.mobile-menu-item {
+  display: block;
+  padding: 12px 16px;
+  color: var(--glassdoor-gray);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-menu-item:hover {
+  background: var(--glassdoor-gray-bg);
+  color: var(--glassdoor-green);
+}
+
+.mobile-menu-item.btn-primary {
+  background: var(--glassdoor-green);
+  color: white;
+  text-align: center;
+}
+
+.mobile-menu-item.btn-primary:hover {
+  background: var(--glassdoor-green-dark);
+}
+
 .navbar-user {
   color: var(--glassdoor-gray);
   font-size: 14px;
@@ -112,25 +255,16 @@
     font-size: 24px;
   }
 
-  .navbar-menu {
-    gap: 8px;
-    flex-wrap: wrap;
+  .desktop-menu {
+    display: none;
   }
 
-  .navbar-user {
-    font-size: 12px;
-    padding: 6px 10px;
-    display: none; /* Hide on very small screens */
+  .mobile-menu-btn {
+    display: block;
   }
 
-  .navbar-link,
-  .btn-logout {
-    padding: 8px 12px;
-    font-size: 13px;
-  }
-
-  .navbar-link.btn-primary {
-    padding: 8px 16px;
+  .mobile-menu {
+    display: flex;
   }
 }
 

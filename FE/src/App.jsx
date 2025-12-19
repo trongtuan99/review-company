@@ -8,6 +8,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import CompanyDetail from './pages/CompanyDetail';
 import AllCompanies from './pages/AllCompanies';
+import About from './pages/About';
+import FAQ from './pages/FAQ';
+import Profile from './pages/Profile';
 import { API_BASE_URL } from './config/api';
 import './App.css';
 
@@ -26,6 +29,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/companies" element={<AllCompanies />} />
               <Route path="/companies/:id" element={<CompanyDetail />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
