@@ -1,102 +1,124 @@
 .company-detail-container {
-  padding: 20px;
+  padding: 0;
+  background: var(--glassdoor-gray-bg);
 }
 
 .back-link {
-  display: inline-block;
-  margin-bottom: 20px;
-  color: #007bff;
+  display: inline-flex;
+  align-items: center;
+  margin: 24px 24px 0;
+  color: var(--glassdoor-green);
   text-decoration: none;
   font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 8px 12px;
+  border-radius: 6px;
 }
 
 .back-link:hover {
-  text-decoration: underline;
+  background-color: var(--glassdoor-green-light);
+  color: var(--glassdoor-green-dark);
 }
 
 .company-header {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  background: var(--glassdoor-white);
+  padding: 40px 24px;
+  border-bottom: 1px solid var(--glassdoor-border);
+  margin-bottom: 0;
 }
 
 .company-header h1 {
-  font-size: 32px;
-  color: #333;
-  margin-bottom: 15px;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--glassdoor-gray);
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
 }
 
 .company-meta {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
 .score-badge {
-  background-color: #ffc107;
-  color: #333;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 18px;
+  background: linear-gradient(135deg, var(--glassdoor-green) 0%, var(--glassdoor-green-dark) 100%);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-weight: 700;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .company-info {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  background: var(--glassdoor-white);
+  padding: 32px 24px;
+  border-bottom: 1px solid var(--glassdoor-border);
+  margin-bottom: 0;
 }
 
 .info-item {
-  margin: 15px 0;
+  margin: 16px 0;
   font-size: 16px;
+  color: var(--glassdoor-gray);
+  line-height: 1.6;
 }
 
 .info-item strong {
-  color: #333;
-  margin-right: 10px;
+  color: var(--glassdoor-gray);
+  margin-right: 12px;
+  font-weight: 600;
 }
 
 .info-item a {
-  color: #007bff;
+  color: var(--glassdoor-green);
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 
 .info-item a:hover {
+  color: var(--glassdoor-green-dark);
   text-decoration: underline;
 }
 
 .reviews-section {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--glassdoor-white);
+  padding: 40px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .reviews-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--glassdoor-border);
 }
 
 .reviews-header h2 {
-  font-size: 24px;
-  color: #333;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--glassdoor-gray);
+  margin: 0;
 }
 
 /* Responsive - Mobile */
 @media (max-width: 768px) {
-  .company-detail-container {
-    padding: 10px;
+  .back-link {
+    margin: 16px 16px 0;
+    font-size: 14px;
   }
 
   .company-header {
-    padding: 20px;
+    padding: 24px 16px;
   }
 
   .company-header h1 {
@@ -106,30 +128,31 @@
   .company-meta {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 16px;
   }
 
   .company-info {
-    padding: 15px;
+    padding: 24px 16px;
   }
 
   .info-item {
     font-size: 14px;
-    margin: 10px 0;
+    margin: 12px 0;
   }
 
   .reviews-section {
-    padding: 20px;
+    padding: 24px 16px;
   }
 
   .reviews-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: 16px;
+    padding-bottom: 16px;
   }
 
   .reviews-header h2 {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .reviews-header .btn-primary {

@@ -1,15 +1,17 @@
 .create-review-form {
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  border: 1px solid #e0e0e0;
+  background: var(--glassdoor-white);
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid var(--glassdoor-border);
+  box-shadow: 0 2px 8px var(--glassdoor-shadow);
 }
 
 .create-review-form h3 {
   margin-bottom: 20px;
-  color: #333;
-  font-size: 20px;
+  color: var(--glassdoor-gray);
+  font-size: 22px;
+  font-weight: 700;
 }
 
 /* Responsive - Mobile */

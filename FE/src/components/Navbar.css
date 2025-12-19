@@ -1,86 +1,136 @@
 .navbar {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 15px 0;
+  background-color: var(--glassdoor-white);
+  box-shadow: 0 2px 8px var(--glassdoor-shadow);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--glassdoor-border);
 }
 
 .navbar-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 64px;
 }
 
 .navbar-brand {
   font-size: 24px;
-  font-weight: bold;
-  color: #007bff;
+  font-weight: 700;
+  color: var(--glassdoor-green);
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.2s;
+}
+
+.navbar-brand:hover {
+  opacity: 0.8;
+}
+
+.navbar-brand::before {
+  content: '🏢';
+  font-size: 28px;
 }
 
 .navbar-menu {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .navbar-user {
-  color: #666;
+  color: var(--glassdoor-gray);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: var(--glassdoor-gray-bg);
 }
 
 .navbar-link {
-  color: #333;
+  color: var(--glassdoor-gray);
   text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
 }
 
 .navbar-link:hover {
-  background-color: #f0f0f0;
+  background-color: var(--glassdoor-gray-bg);
+  color: var(--glassdoor-green);
+}
+
+.navbar-link.btn-primary {
+  background-color: var(--glassdoor-green);
+  color: white;
+  padding: 10px 20px;
+  font-weight: 600;
+}
+
+.navbar-link.btn-primary:hover {
+  background-color: var(--glassdoor-green-dark);
 }
 
 .btn-logout {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
+  background-color: transparent;
+  color: var(--glassdoor-gray);
+  border: 1px solid var(--glassdoor-border);
+  padding: 10px 16px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .btn-logout:hover {
-  background-color: #c82333;
+  background-color: var(--glassdoor-gray-bg);
+  border-color: var(--glassdoor-gray-light);
+  color: var(--glassdoor-gray);
 }
 
 /* Responsive - Mobile */
 @media (max-width: 768px) {
   .navbar-container {
-    padding: 0 15px;
-    flex-wrap: wrap;
+    padding: 0 16px;
+    height: 56px;
   }
 
   .navbar-brand {
-    font-size: 20px;
+    font-size: 18px;
+  }
+
+  .navbar-brand::before {
+    font-size: 24px;
   }
 
   .navbar-menu {
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
   .navbar-user {
-    font-size: 14px;
+    font-size: 12px;
+    padding: 6px 10px;
     display: none; /* Hide on very small screens */
   }
 
   .navbar-link,
   .btn-logout {
-    padding: 6px 12px;
-    font-size: 12px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .navbar-link.btn-primary {
+    padding: 8px 16px;
   }
 }
 

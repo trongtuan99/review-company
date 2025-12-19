@@ -1,31 +1,40 @@
 .create-company-form {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  background: var(--glassdoor-white);
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px var(--glassdoor-shadow);
+  margin: 24px 0;
+  border: 1px solid var(--glassdoor-border);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .create-company-form h3 {
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 24px;
+  color: var(--glassdoor-gray);
   font-size: 24px;
+  font-weight: 700;
 }
 
 .info-message {
   padding: 20px;
-  background-color: #e7f3ff;
-  border-radius: 5px;
+  background-color: var(--glassdoor-green-light);
+  border-radius: 8px;
   text-align: center;
+  border: 1px solid var(--glassdoor-green);
+  margin-bottom: 24px;
 }
 
 .info-message a {
-  color: #007bff;
+  color: var(--glassdoor-green);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  transition: color 0.2s;
 }
 
 .info-message a:hover {
+  color: var(--glassdoor-green-dark);
   text-decoration: underline;
 }
 

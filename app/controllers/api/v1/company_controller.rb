@@ -6,12 +6,61 @@ class Api::V1::CompanyController < ApplicationController
 
   def index
     query = params[:q] || params[:search]
+    top_rated = params[:top_rated] == 'true'
+    exclude_ids = params[:exclude_ids]&.split(',')&.map(&:strip)
+    limit = params[:limit]&.to_i
+    page = params[:page]&.to_i || 1
+    per_page = params[:per_page]&.to_i || 20
+    
+    # Base query: only show non-deleted companies
+    base_query = Company.where(is_deleted: false)
+    
     if query.present?
       # Search by name
-      data = Company.where("name ILIKE ?", "%#{query}%").limit(20)
+      data = base_query.where("name ILIKE ?", "%#{query}%").order(created_at: :desc)
+    elsif top_rated
+      # Get top 10 companies by rating (avg_score)
+      # Only include companies with at least 1 review
+      data = base_query
+        .where.not(avg_score: nil)
+        .where("total_reviews > 0")
+        .order(avg_score: :desc, total_reviews: :desc)
+        .limit(10)
+    elsif exclude_ids.present?
+      # Get companies except the ones in exclude_ids (for bottom section)
+      data = base_query
+        .where.not(id: exclude_ids)
+        .order(created_at: :desc)
+      
+      # Apply limit if provided
+      data = data.limit(limit) if limit.present? && limit > 0
     else
-      data = Company.all.limit(10)
+      # Show all companies, ordered by most recent first
+      data = base_query.order(created_at: :desc)
+      
+      # Apply pagination if page/per_page provided
+      if page.present? && per_page.present?
+        total_count = data.count
+        total_pages = (total_count.to_f / per_page).ceil
+        offset = (page - 1) * per_page
+        data = data.limit(per_page).offset(offset)
+        
+        # Return pagination info in response
+        return render json: {
+          status: 'ok',
+          data: data.map { |c| CompanySerializer.new(c).as_json },
+          pagination: {
+            current_page: page,
+            per_page: per_page,
+            total_count: total_count,
+            total_pages: total_pages
+          }
+        }
+      elsif limit.present? && limit > 0
+        data = data.limit(limit)
+      end
     end
+    
     render json: json_with_success(data: data, default_serializer: CompanySerializer)
   end
 

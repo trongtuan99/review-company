@@ -1,81 +1,112 @@
 .review-item {
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  background: var(--glassdoor-white);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--glassdoor-border);
+  margin-bottom: 20px;
+  transition: all 0.2s ease;
+}
+
+.review-item:hover {
+  box-shadow: 0 4px 12px var(--glassdoor-shadow);
 }
 
 .review-header {
   display: flex;
   justify-content: space-between;
   align-items: start;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
+  gap: 16px;
 }
 
 .review-title-score {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
   flex: 1;
+  flex-wrap: wrap;
 }
 
 .review-title-score h4 {
   margin: 0;
-  font-size: 18px;
-  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--glassdoor-gray);
+  line-height: 1.4;
 }
 
 .review-title-score .score-badge {
-  background-color: #ffc107;
-  color: #333;
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-weight: bold;
-  font-size: 14px;
+  background: linear-gradient(135deg, var(--glassdoor-green) 0%, var(--glassdoor-green-dark) 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
 }
 
 .anonymous-badge,
 .review-author {
   font-size: 14px;
-  color: #666;
-  font-style: italic;
+  color: var(--glassdoor-gray-light);
+  font-weight: 500;
+  padding: 6px 12px;
+  background-color: var(--glassdoor-gray-bg);
+  border-radius: 6px;
+  white-space: nowrap;
 }
 
 .review-content {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  padding: 16px 0;
+  border-top: 1px solid var(--glassdoor-border);
+  border-bottom: 1px solid var(--glassdoor-border);
 }
 
 .review-content p {
-  color: #555;
-  line-height: 1.6;
+  color: var(--glassdoor-gray);
+  line-height: 1.7;
   margin: 0;
+  font-size: 15px;
 }
 
 .review-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .action-btn {
-  background: white;
-  border: 1px solid #ddd;
-  padding: 8px 16px;
-  border-radius: 5px;
+  background: var(--glassdoor-white);
+  border: 1px solid var(--glassdoor-border);
+  padding: 10px 18px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  transition: all 0.2s;
+  font-weight: 500;
+  color: var(--glassdoor-gray);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .action-btn:hover {
-  background-color: #f0f0f0;
-  border-color: #007bff;
+  background-color: var(--glassdoor-gray-bg);
+  border-color: var(--glassdoor-green);
+  color: var(--glassdoor-green);
 }
 
 .action-btn.active {
-  background-color: #007bff;
+  background-color: var(--glassdoor-green);
   color: white;
-  border-color: #007bff;
+  border-color: var(--glassdoor-green);
+}
+
+.action-btn.active:hover {
+  background-color: var(--glassdoor-green-dark);
+  border-color: var(--glassdoor-green-dark);
 }
 
 .action-btn:disabled {
@@ -84,39 +115,48 @@
 }
 
 .replies-section {
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px solid #e0e0e0;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid var(--glassdoor-border);
+  background-color: var(--glassdoor-gray-bg);
+  padding: 20px;
+  border-radius: 8px;
 }
 
 /* Responsive - Mobile */
 @media (max-width: 768px) {
   .review-item {
-    padding: 15px;
+    padding: 20px;
   }
 
   .review-header {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
   .review-title-score {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 12px;
+    width: 100%;
   }
 
   .review-title-score h4 {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .review-actions {
     flex-direction: column;
+    width: 100%;
   }
 
   .action-btn {
     width: 100%;
     justify-content: center;
+  }
+
+  .replies-section {
+    padding: 16px;
   }
 }
 

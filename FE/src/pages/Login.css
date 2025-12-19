@@ -3,37 +3,45 @@
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 200px);
-  padding: 20px;
+  padding: 40px 20px;
+  background: var(--glassdoor-gray-bg);
 }
 
 .login-card {
-  background: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--glassdoor-white);
+  padding: 48px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px var(--glassdoor-shadow);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  border: 1px solid var(--glassdoor-border);
 }
 
 .login-card h2 {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
-  font-size: 28px;
+  margin-bottom: 32px;
+  color: var(--glassdoor-gray);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .register-link {
   text-align: center;
-  margin-top: 20px;
-  color: #666;
+  margin-top: 24px;
+  color: var(--glassdoor-gray-light);
+  font-size: 14px;
 }
 
 .register-link a {
-  color: #007bff;
+  color: var(--glassdoor-green);
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
 }
 
 .register-link a:hover {
+  color: var(--glassdoor-green-dark);
   text-decoration: underline;
 }
 

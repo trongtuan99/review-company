@@ -1,23 +1,25 @@
 .reply-list-container {
-  margin-top: 15px;
+  margin-top: 16px;
 }
 
 .reply-list {
-  padding-left: 20px;
-  border-left: 3px solid #e0e0e0;
+  padding-left: 24px;
+  border-left: 3px solid var(--glassdoor-green-light);
 }
 
 .loading-replies {
-  padding: 10px;
-  color: #666;
+  padding: 16px;
+  color: var(--glassdoor-gray-light);
   font-size: 14px;
+  font-weight: 500;
 }
 
 .empty-replies {
-  padding: 10px;
-  color: #999;
+  padding: 16px;
+  color: var(--glassdoor-gray-light);
   font-size: 14px;
   font-style: italic;
+  text-align: center;
 }
 
 /* Responsive - Mobile */

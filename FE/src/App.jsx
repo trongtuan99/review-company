@@ -2,10 +2,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import CompanyDetail from './pages/CompanyDetail';
+import AllCompanies from './pages/AllCompanies';
 import { API_BASE_URL } from './config/api';
 import './App.css';
 
@@ -22,10 +24,12 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/" element={<Home />} />
+              <Route path="/companies" element={<AllCompanies />} />
               <Route path="/companies/:id" element={<CompanyDetail />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
+          <Footer />
           {isDevelopment && (
             <div style={{
               position: 'fixed',

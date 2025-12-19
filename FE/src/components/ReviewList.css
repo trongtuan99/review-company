@@ -1,13 +1,16 @@
 .review-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0;
 }
 
 .empty-reviews {
   text-align: center;
-  padding: 40px;
-  color: #999;
+  padding: 60px 24px;
+  color: var(--glassdoor-gray-light);
   font-size: 16px;
+  background: var(--glassdoor-white);
+  border-radius: 12px;
+  border: 1px solid var(--glassdoor-border);
 }
 
