@@ -1,0 +1,48 @@
+.reply-item {
+  background: white;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #e0e0e0;
+}
+
+.reply-content {
+  margin-bottom: 10px;
+}
+
+.reply-content p {
+  margin: 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.edited-badge {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+  margin-left: 10px;
+}
+
+.reply-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 12px;
+  color: #999;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .reply-item {
+    padding: 12px;
+  }
+
+  .reply-content p {
+    font-size: 14px;
+  }
+
+  .reply-meta {
+    font-size: 11px;
+    flex-wrap: wrap;
+  }
+}
+

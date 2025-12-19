@@ -5,7 +5,7 @@ module ApiRoutes
         sessions: 'api/v1/sessions'
       }
       namespace :api do
-        api_version(module: 'V1', header: { name: 'X-API-VERSION', value: 'v1' }) do
+        namespace :v1 do
           devise_scope :user do
             post 'auth/sign_up', to: 'registrations#create'
             post 'auth/sign_in', to: 'sessions#create'
@@ -35,7 +35,7 @@ module ApiRoutes
               put :update_profile
             end
           end
-       end
+        end
      end
    end
  end

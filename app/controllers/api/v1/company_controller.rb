@@ -1,10 +1,17 @@
 class Api::V1::CompanyController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :update, :company_overview, :delete_company]
-  before_action :check_role_permission, only: [:create, :update, :delete_company]
+  before_action :authenticate_user!, only: [:create, :update, :delete_company]
+  # Allow any authenticated user to create company (not just admin/owner)
+  before_action :check_role_permission, only: [:update, :delete_company]
   before_action :get_company, only: [:company_overview, :update, :delete_company]
 
   def index
-    data = Company.all.limit(10)
+    query = params[:q] || params[:search]
+    if query.present?
+      # Search by name
+      data = Company.where("name ILIKE ?", "%#{query}%").limit(20)
+    else
+      data = Company.all.limit(10)
+    end
     render json: json_with_success(data: data, default_serializer: CompanySerializer)
   end
 

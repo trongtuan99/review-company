@@ -1,0 +1,13 @@
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.empty-reviews {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-size: 16px;
+}
+

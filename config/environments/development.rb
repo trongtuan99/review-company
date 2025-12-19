@@ -54,6 +54,11 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
+  # Allow ngrok domains for development
+  # This allows requests from ngrok tunnels to reach the Rails server
+  config.hosts << "advanced-unified-midge.ngrok-free.app"
+  config.hosts << /.*\.ngrok-free\.app/
+  config.hosts << /.*\.ngrok\.io/
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

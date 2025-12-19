@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Script to start ngrok tunnel for Frontend (Vite dev server)
+# Usage: ./bin/start_ngrok [port] [domain]
+# Default: port 5173
+
+PORT=${1:-5173}
+DOMAIN=${2:-""}
+
+echo "🚀 Starting ngrok tunnel for Frontend..."
+echo "   Port: $PORT"
+if [ -n "$DOMAIN" ]; then
+  echo "   Domain: $DOMAIN"
+  ngrok http --domain=$DOMAIN $PORT
+else
+  echo "   Using random ngrok URL"
+  ngrok http $PORT
+fi
+

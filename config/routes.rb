@@ -3,5 +3,8 @@ Rails.application.routes.draw do
   root to: redirect('/health')
   get 'health', to: 'health#show'
 
-  extend ApiRoutes unless ENV['ATTACHED_API'].to_i.zero?
+  # Load API routes if ATTACHED_API is set to non-zero, or in development/test by default
+  if ENV['ATTACHED_API'].to_i.positive? || Rails.env.development? || Rails.env.test?
+    extend ApiRoutes
+  end
 end

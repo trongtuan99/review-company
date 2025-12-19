@@ -69,7 +69,7 @@ class Api::V1::ReviewController < ApplicationController
   end
 
   def create_update_params
-    params.require(:review).permit(:title, :review_content, :score)
+    params.require(:review).permit(:title, :reviews_content, :score)
   end
 
   def get_like_record

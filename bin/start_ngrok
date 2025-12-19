@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Script to start ngrok tunnel for Rails API
+# Usage: ./bin/start_ngrok
+
+PORT=${1:-3000}
+DOMAIN=${2:-"advanced-unified-midge.ngrok-free.app"}
+
+echo "🚀 Starting ngrok tunnel..."
+echo "   Domain: $DOMAIN"
+echo "   Port: $PORT"
+echo ""
+echo "⚠️  Make sure Rails server is running on port $PORT"
+echo "   Run: rails s"
+echo ""
+
+# Check if Rails is running on the port
+if ! lsof -i :$PORT | grep -q ruby; then
+  echo "❌ Rails server is not running on port $PORT"
+  echo "   Please start Rails server first: rails s"
+  exit 1
+fi
+
+# Start ngrok
+ngrok http --domain=$DOMAIN $PORT
+

@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# This script runs the Kafka consumer daemon for like events
+require_relative '../config/environment'
+
+puts "Starting Kafka Consumer for Like Events..."
+puts "Press Ctrl+C to stop"
+
+begin
+  Likes::HandleLikeEvent.new.daemon
+rescue Interrupt
+  puts "\nStopping Kafka Consumer..."
+  exit 0
+end
+

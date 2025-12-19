@@ -1,0 +1,25 @@
+.create-review-form {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.create-review-form h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 20px;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .create-review-form {
+    padding: 15px;
+  }
+
+  .create-review-form h3 {
+    font-size: 18px;
+  }
+}
+

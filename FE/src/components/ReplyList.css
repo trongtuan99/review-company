@@ -1,0 +1,33 @@
+.reply-list-container {
+  margin-top: 15px;
+}
+
+.reply-list {
+  padding-left: 20px;
+  border-left: 3px solid #e0e0e0;
+}
+
+.loading-replies {
+  padding: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+.empty-replies {
+  padding: 10px;
+  color: #999;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .reply-list {
+    padding-left: 10px;
+  }
+
+  .reply-list-container {
+    margin-top: 10px;
+  }
+}
+

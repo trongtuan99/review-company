@@ -11,14 +11,22 @@ class Company < ApplicationRecord
   validates :name, uniqueness: true
   has_many :reviews, dependent: :destroy
 
-  after_commit :update_country_score, on: :update, if: -> { saved_change_to_total_reviews? }
+  # Recalculate avg_score when total_reviews changes
+  after_commit :recalculate_avg_score, on: :update, if: -> { saved_change_to_total_reviews? }
+
+  # Method to recalculate avg_score manually
+  def recalculate_avg_score!
+    reviews_count = reviews.count
+    return if reviews_count.zero?
+
+    total_score = reviews.sum(:score)
+    new_avg_score = total_score.to_f / reviews_count
+    update_column(:avg_score, new_avg_score)
+  end
 
   private
 
-  def update_country_score
-    return if total_reviews.zero?
-
-    new_avg_score = reviews.sum(:score) / total_reviews
-    update_attribute(:avg_score, new_avg_score)
+  def recalculate_avg_score
+    recalculate_avg_score!
   end
 end

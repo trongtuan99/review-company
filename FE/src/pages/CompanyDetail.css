@@ -1,0 +1,139 @@
+.company-detail-container {
+  padding: 20px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.company-header {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.company-header h1 {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.company-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.score-badge {
+  background-color: #ffc107;
+  color: #333;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.company-info {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.info-item {
+  margin: 15px 0;
+  font-size: 16px;
+}
+
+.info-item strong {
+  color: #333;
+  margin-right: 10px;
+}
+
+.info-item a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.info-item a:hover {
+  text-decoration: underline;
+}
+
+.reviews-section {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.reviews-header h2 {
+  font-size: 24px;
+  color: #333;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .company-detail-container {
+    padding: 10px;
+  }
+
+  .company-header {
+    padding: 20px;
+  }
+
+  .company-header h1 {
+    font-size: 24px;
+  }
+
+  .company-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .company-info {
+    padding: 15px;
+  }
+
+  .info-item {
+    font-size: 14px;
+    margin: 10px 0;
+  }
+
+  .reviews-section {
+    padding: 20px;
+  }
+
+  .reviews-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .reviews-header h2 {
+    font-size: 20px;
+  }
+
+  .reviews-header .btn-primary {
+    width: 100%;
+  }
+}
+

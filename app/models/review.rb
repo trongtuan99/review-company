@@ -11,12 +11,24 @@ class Review < ApplicationRecord
 
   before_create :set_default_values
   after_commit :update_company_total_review, on: :create
+  after_commit :update_company_avg_score, on: [:create, :update, :destroy]
 
   private
 
   def update_company_total_review
     Company.transaction do
       company.increment!(:total_reviews, 1)
+    end
+  end
+
+  def update_company_avg_score
+    Company.transaction do
+      reviews_count = company.reviews.count
+      return if reviews_count.zero?
+
+      total_score = company.reviews.sum(:score)
+      new_avg_score = total_score.to_f / reviews_count
+      company.update_column(:avg_score, new_avg_score)
     end
   end
 
