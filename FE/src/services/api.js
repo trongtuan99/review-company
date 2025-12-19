@@ -11,7 +11,13 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
-    const tenant = localStorage.getItem('tenant') || DEFAULT_TENANT;
+    // Always use DEFAULT_TENANT if tenant not set in localStorage
+    // This ensures tenant header is always sent
+    let tenant = localStorage.getItem('tenant');
+    if (!tenant) {
+      tenant = DEFAULT_TENANT;
+      localStorage.setItem('tenant', tenant);
+    }
     
     config.headers = {
       ...config.headers,

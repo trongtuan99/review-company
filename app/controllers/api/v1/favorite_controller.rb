@@ -4,7 +4,9 @@ class Api::V1::FavoriteController < ApplicationController
   def create
     company_id = params[:company_id] || params.dig(:favorite, :company_id)
     company = Company.find(company_id)
-    favorite = current_user.favorites.find_or_initialize_by(company: company)
+    
+    # Query favorite directly in current tenant schema (not through user association)
+    favorite = Favorite.find_or_initialize_by(user_id: current_user.id, company_id: company.id)
     
     if favorite.persisted?
       render json: json_with_error(message: "Công ty đã được yêu thích")
@@ -21,7 +23,9 @@ class Api::V1::FavoriteController < ApplicationController
   def destroy
     company_id = params[:id] || params[:company_id]
     company = Company.find(company_id)
-    favorite = current_user.favorites.find_by(company: company)
+    
+    # Query favorite directly in current tenant schema
+    favorite = Favorite.find_by(user_id: current_user.id, company_id: company.id)
     
     if favorite
       favorite.destroy
@@ -34,14 +38,16 @@ class Api::V1::FavoriteController < ApplicationController
   end
 
   def index
-    favorites = current_user.favorites.includes(:company)
-    companies = favorites.map(&:company).select { |c| !c.is_deleted }
+    # Query favorites directly in current tenant schema
+    favorites = Favorite.where(user_id: current_user.id).includes(:company)
+    companies = favorites.map(&:company).compact.select { |c| !c.is_deleted }
     render json: json_with_success(data: companies, default_serializer: CompanySerializer)
   end
 
   def check
     company = Company.find(params[:company_id])
-    is_favorited = current_user.favorites.exists?(company: company)
+    # Query favorite directly in current tenant schema
+    is_favorited = Favorite.exists?(user_id: current_user.id, company_id: company.id)
     render json: json_with_success(data: { is_favorited: is_favorited })
   rescue ActiveRecord::RecordNotFound
     render json: json_with_error(message: "Không tìm thấy công ty")

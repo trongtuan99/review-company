@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_15_000000) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_19_170216) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -131,7 +131,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_15_000000) do
   end
 
   add_foreign_key "favorites", "companies"
-  add_foreign_key "favorites", "users"
   add_foreign_key "likes", "reviews"
   add_foreign_key "replies", "reviews"
 end

@@ -8,8 +8,8 @@ class CreateFavorites < ActiveRecord::Migration[7.0]
         t.timestamps
       end
       
-      # Add foreign keys
-      add_foreign_key :favorites, :users, column: :user_id
+      # Only add foreign key for company (company is in tenant schema)
+      # User is in public schema (excluded_models), so we can't add foreign key constraint
       add_foreign_key :favorites, :companies, column: :company_id
       
       # Add indexes (only if they don't exist)
