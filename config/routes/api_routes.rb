@@ -35,6 +35,12 @@ module ApiRoutes
               put :update_profile
             end
           end
+
+          resources :favorite, only: %i[index create destroy] do
+            collection do
+              get 'check/:company_id', to: 'favorite#check', as: 'check'
+            end
+          end
         end
      end
    end

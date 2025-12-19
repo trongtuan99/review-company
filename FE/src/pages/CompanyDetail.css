@@ -28,12 +28,61 @@
   margin-bottom: 0;
 }
 
+.company-title-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
 .company-header h1 {
   font-size: 36px;
   font-weight: 700;
   color: var(--glassdoor-gray);
-  margin-bottom: 20px;
+  margin: 0;
   letter-spacing: -0.5px;
+  flex: 1;
+}
+
+.favorite-btn {
+  padding: 10px 20px;
+  background: var(--glassdoor-white);
+  border: 2px solid var(--glassdoor-border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--glassdoor-gray);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.favorite-btn:hover:not(:disabled) {
+  border-color: var(--glassdoor-green);
+  color: var(--glassdoor-green);
+  background: var(--glassdoor-green-light);
+}
+
+.favorite-btn.favorited {
+  background: var(--glassdoor-green-light);
+  border-color: var(--glassdoor-green);
+  color: var(--glassdoor-green-dark);
+}
+
+.favorite-btn.favorited:hover:not(:disabled) {
+  background: var(--glassdoor-white);
+  border-color: var(--glassdoor-gray-light);
+  color: var(--glassdoor-gray);
+}
+
+.favorite-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .company-meta {
@@ -157,6 +206,16 @@
 
   .reviews-header .btn-primary {
     width: 100%;
+  }
+
+  .company-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .favorite-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 

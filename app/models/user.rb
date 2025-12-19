@@ -4,6 +4,8 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null
 
   belongs_to :role, optional: true
+  has_many :favorites, dependent: :destroy
+  has_many :favorite_companies, through: :favorites, source: :company
   include WhoDoesIt::CurrentUserMethods
 
   after_create :set_default_role, if: -> { role_id.nil?}

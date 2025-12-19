@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { companyService } from '../services/companyService';
 import { reviewService } from '../services/reviewService';
+import { favoriteService } from '../services/favoriteService';
 import ReviewList from '../components/ReviewList';
 import CreateReviewForm from '../components/CreateReviewForm';
 import './CompanyDetail.css';
@@ -15,10 +16,15 @@ const CompanyDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
 
   useEffect(() => {
     loadCompanyData();
-  }, [id]);
+    if (isAuthenticated) {
+      checkFavoriteStatus();
+    }
+  }, [id, isAuthenticated]);
 
   const loadCompanyData = async () => {
     try {
@@ -56,6 +62,41 @@ const CompanyDetail = () => {
     loadCompanyData();
   };
 
+  const checkFavoriteStatus = async () => {
+    if (!isAuthenticated) return;
+    try {
+      const response = await favoriteService.checkFavorite(id);
+      if (response.status === 'ok' || response.status === 'success') {
+        setIsFavorited(response.data?.is_favorited || false);
+      }
+    } catch (err) {
+      console.error('Check favorite error:', err);
+    }
+  };
+
+  const handleToggleFavorite = async () => {
+    if (!isAuthenticated) {
+      alert('Vui lòng đăng nhập để yêu thích công ty');
+      return;
+    }
+
+    try {
+      setFavoriteLoading(true);
+      if (isFavorited) {
+        await favoriteService.removeFavorite(id);
+        setIsFavorited(false);
+      } else {
+        await favoriteService.addFavorite(id);
+        setIsFavorited(true);
+      }
+    } catch (err) {
+      console.error('Toggle favorite error:', err);
+      alert(err.message || 'Không thể cập nhật yêu thích');
+    } finally {
+      setFavoriteLoading(false);
+    }
+  };
+
   if (loading) {
     return <div className="loading">Đang tải...</div>;
   }
@@ -83,7 +124,19 @@ const CompanyDetail = () => {
       <Link to="/" className="back-link">← Quay lại</Link>
       
       <div className="company-header">
-        <h1>{company.name}</h1>
+        <div className="company-title-section">
+          <h1>{company.name}</h1>
+          {isAuthenticated && (
+            <button
+              className={`favorite-btn ${isFavorited ? 'favorited' : ''}`}
+              onClick={handleToggleFavorite}
+              disabled={favoriteLoading}
+              title={isFavorited ? 'Bỏ yêu thích' : 'Yêu thích'}
+            >
+              {isFavorited ? '❤️' : '🤍'} {isFavorited ? 'Đã yêu thích' : 'Yêu thích'}
+            </button>
+          )}
+        </div>
         <div className="company-meta">
           <div className="score-badge">
             ⭐ {company.avg_score?.toFixed(1) || '0.0'}

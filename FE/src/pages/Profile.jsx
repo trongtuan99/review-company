@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { userService } from '../services/userService';
+import { favoriteService } from '../services/favoriteService';
 import ProtectedRoute from '../components/ProtectedRoute';
 import './Profile.css';
 
@@ -12,6 +13,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [favoriteCompanies, setFavoriteCompanies] = useState([]);
+  const [favoritesLoading, setFavoritesLoading] = useState(false);
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -21,6 +24,7 @@ const Profile = () => {
   useEffect(() => {
     if (user) {
       loadProfile();
+      loadFavoriteCompanies();
     }
   }, [user]);
 
@@ -65,6 +69,30 @@ const Profile = () => {
     } catch (err) {
       console.error('Update profile error:', err);
       setError(err.message || 'Không thể cập nhật profile');
+    }
+  };
+
+  const loadFavoriteCompanies = async () => {
+    try {
+      setFavoritesLoading(true);
+      const response = await favoriteService.getFavorites();
+      if (response.status === 'ok' || response.status === 'success') {
+        setFavoriteCompanies(response.data || []);
+      }
+    } catch (err) {
+      console.error('Load favorites error:', err);
+    } finally {
+      setFavoritesLoading(false);
+    }
+  };
+
+  const handleRemoveFavorite = async (companyId) => {
+    try {
+      await favoriteService.removeFavorite(companyId);
+      setFavoriteCompanies(favoriteCompanies.filter(c => c.id !== companyId));
+    } catch (err) {
+      console.error('Remove favorite error:', err);
+      alert('Không thể xóa khỏi danh sách yêu thích');
     }
   };
 
@@ -211,11 +239,56 @@ const Profile = () => {
                 <div className="stat-label">Lượt thích</div>
               </div>
               <div className="stat-card">
-                <div className="stat-icon">🏢</div>
-                <div className="stat-value">0</div>
-                <div className="stat-label">Công ty đã tạo</div>
+                <div className="stat-icon">❤️</div>
+                <div className="stat-value">{favoriteCompanies.length}</div>
+                <div className="stat-label">Công ty yêu thích</div>
               </div>
             </div>
+          </div>
+
+          <div className="favorite-companies-section">
+            <h3>Công ty yêu thích ({favoriteCompanies.length})</h3>
+            {favoritesLoading ? (
+              <div className="loading">Đang tải...</div>
+            ) : favoriteCompanies.length === 0 ? (
+              <div className="empty-favorites">
+                <p>Bạn chưa yêu thích công ty nào</p>
+                <Link to="/companies" className="browse-link">
+                  Khám phá công ty →
+                </Link>
+              </div>
+            ) : (
+              <div className="favorite-companies-grid">
+                {favoriteCompanies.map((company) => (
+                  <div key={company.id} className="favorite-company-card">
+                    <Link
+                      to={`/companies/${company.id}`}
+                      className="favorite-company-link"
+                    >
+                      <div className="favorite-company-header">
+                        <h4>{company.name}</h4>
+                        <div className="favorite-company-score">
+                          ⭐ {company.avg_score?.toFixed(1) || '0.0'}
+                        </div>
+                      </div>
+                      <div className="favorite-company-info">
+                        <p>{company.total_reviews || 0} đánh giá</p>
+                        {company.main_office && (
+                          <p className="location">📍 {company.main_office}</p>
+                        )}
+                      </div>
+                    </Link>
+                    <button
+                      className="remove-favorite-btn"
+                      onClick={() => handleRemoveFavorite(company.id)}
+                      title="Xóa khỏi yêu thích"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

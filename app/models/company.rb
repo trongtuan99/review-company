@@ -10,6 +10,8 @@ class Company < ApplicationRecord
   validates :name, :owner, presence: true
   validates :name, uniqueness: true
   has_many :reviews, dependent: :destroy
+  has_many :favorites, dependent: :destroy
+  has_many :favorited_by_users, through: :favorites, source: :user
 
   # Recalculate avg_score when total_reviews changes
   after_commit :recalculate_avg_score, on: :update, if: -> { saved_change_to_total_reviews? }

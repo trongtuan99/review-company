@@ -257,3 +257,156 @@
   }
 }
 
+.favorite-companies-section {
+  background: var(--glassdoor-white);
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--glassdoor-shadow);
+  border: 1px solid var(--glassdoor-border);
+  margin-top: 24px;
+}
+
+.favorite-companies-section h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--glassdoor-gray);
+  margin: 0 0 24px 0;
+}
+
+.empty-favorites {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--glassdoor-gray-light);
+}
+
+.empty-favorites p {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.browse-link {
+  display: inline-block;
+  padding: 12px 24px;
+  background: var(--glassdoor-green);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.browse-link:hover {
+  background: var(--glassdoor-green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--glassdoor-shadow);
+}
+
+.favorite-companies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.favorite-company-card {
+  position: relative;
+  background: var(--glassdoor-gray-bg);
+  border: 1px solid var(--glassdoor-border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.favorite-company-card:hover {
+  box-shadow: 0 4px 12px var(--glassdoor-shadow);
+  border-color: var(--glassdoor-green-light);
+}
+
+.favorite-company-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.favorite-company-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.favorite-company-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--glassdoor-gray);
+  margin: 0;
+  flex: 1;
+}
+
+.favorite-company-header h4:hover {
+  color: var(--glassdoor-green);
+}
+
+.favorite-company-score {
+  background: linear-gradient(135deg, var(--glassdoor-green) 0%, var(--glassdoor-green-dark) 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.favorite-company-info {
+  color: var(--glassdoor-gray-light);
+  font-size: 14px;
+}
+
+.favorite-company-info p {
+  margin: 6px 0;
+}
+
+.favorite-company-info .location {
+  font-size: 13px;
+}
+
+.remove-favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--glassdoor-gray-light);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.favorite-company-card:hover .remove-favorite-btn {
+  opacity: 1;
+}
+
+.remove-favorite-btn:hover {
+  background: #ff4444;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .favorite-companies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .remove-favorite-btn {
+    opacity: 1;
+  }
+}
+
