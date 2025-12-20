@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in
     const currentUser = authService.getCurrentUser();
     if (currentUser && authService.isAuthenticated()) {
       setUser(currentUser);
@@ -27,9 +26,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await authService.signIn(email, password);
-      console.log('Login response:', response); // Debug log
       
-      // Backend returns status: 'ok' (not 'success')
       if ((response.status === 'ok' || response.status === 'success') && response.data) {
         const userData = response.data;
         localStorage.setItem('access_token', userData.access_token);
@@ -39,7 +36,6 @@ export const AuthProvider = ({ children }) => {
       }
       return { success: false, error: response.message || 'Login failed' };
     } catch (error) {
-      console.error('Login error:', error); // Debug log
       let errorMessage = 'Login failed';
       
       if (error.error === 'Network Error' || error.message?.includes('Network Error')) {
@@ -59,9 +55,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await authService.signUp(userData);
-      // Backend returns status: 'ok' (not 'success')
       if (response.status === 'ok' || response.status === 'success') {
-        // Auto login after registration
         return await login(userData.email, userData.password);
       }
       return { success: false, error: response.message || 'Registration failed' };

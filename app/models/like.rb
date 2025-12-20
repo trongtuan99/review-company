@@ -21,14 +21,25 @@ class Like < ApplicationRecord
 
   def update_total_like_dislike
     return unless saved_change_to_status?
+    
+    old_status = previous_changes[:status] ? previous_changes[:status][0] : nil
+    new_status = status.to_sym
+    
     review.with_lock do
-      case status.to_sym
+      # Decrement old status
+      case old_status&.to_sym
+      when :like
+        review.decrement!(:total_like, 1) if review.total_like > 0
+      when :dislike
+        review.decrement!(:total_dislike, 1) if review.total_dislike > 0
+      end
+      
+      # Increment new status
+      case new_status
       when :like
         review.increment!(:total_like, 1)
-        review.decrement!(:total_dislike, 1) if previous_changes[:status][0].to_sym == :dislike
       when :dislike
         review.increment!(:total_dislike, 1)
-        review.decrement!(:total_like, 1) if previous_changes[:status][0].to_sym == :like
       end
     end
   end

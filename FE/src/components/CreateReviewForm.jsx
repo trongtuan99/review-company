@@ -30,9 +30,7 @@ const CreateReviewForm = ({ companyId, onSuccess, onCancel }) => {
     try {
       setLoading(true);
       const response = await reviewService.createReview(companyId, formData);
-      console.log('Create review response:', response); // Debug
       
-      // Backend returns status: 'ok' (not 'success')
       if (response.status === 'ok' || response.status === 'success') {
         onSuccess?.();
         setFormData({ title: '', reviews_content: '', score: 5 });
@@ -40,7 +38,6 @@ const CreateReviewForm = ({ companyId, onSuccess, onCancel }) => {
         setError(response.message || 'Không thể tạo đánh giá');
       }
     } catch (err) {
-      console.error('Create review error:', err); // Debug
       setError(err.message || err.error || 'Không thể tạo đánh giá');
     } finally {
       setLoading(false);

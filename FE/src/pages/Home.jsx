@@ -41,7 +41,7 @@ const Home = () => {
         setTopCompanies(response.data || []);
       }
     } catch (err) {
-      console.error('Load top companies error:', err);
+      // Silent fail for top companies
     }
   };
 
@@ -64,7 +64,7 @@ const Home = () => {
         }
       }
     } catch (err) {
-      console.error('Load remaining companies error:', err);
+      // Silent fail for remaining companies
     }
   };
 
@@ -73,16 +73,13 @@ const Home = () => {
       setLoading(true);
       setError('');
       const response = await companyService.getCompanies(query);
-      console.log('Companies response:', response); // Debug log
       
-      // Backend returns status: 'ok' (not 'success')
       if (response.status === 'ok' || response.status === 'success') {
         setCompanies(response.data || []);
       } else {
         setError(response.message || 'Không thể tải danh sách công ty');
       }
     } catch (err) {
-      console.error('Load companies error:', err); // Debug log
       let errorMessage = 'Không thể tải danh sách công ty';
       
       if (err.error === 'Network Error' || err.message?.includes('Network Error')) {

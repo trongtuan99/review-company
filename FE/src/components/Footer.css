@@ -1,8 +1,11 @@
 .footer {
   background: var(--glassdoor-gray);
   color: var(--glassdoor-white);
-  margin-top: auto;
+  flex-shrink: 0;
+  flex-grow: 0;
   border-top: 1px solid var(--glassdoor-border);
+  position: relative;
+  z-index: 1;
 }
 
 .footer-container {

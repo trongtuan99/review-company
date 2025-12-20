@@ -1,56 +1,53 @@
-import { useState } from 'react';
-import { reviewService } from '../services/reviewService';
+import { useState, useEffect } from 'react';
+import { useReviewMutations } from '../hooks/useReviewMutations';
 import ReplyList from './ReplyList';
 import CreateReplyForm from './CreateReplyForm';
 import './ReviewItem.css';
 
-const ReviewItem = ({ review, isAuthenticated, onUpdate }) => {
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
+const ReviewItem = ({ review, isAuthenticated, onUpdate, companyId }) => {
+  const [currentReview, setCurrentReview] = useState(review);
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyForm, setShowReplyForm] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [replyRefreshKey, setReplyRefreshKey] = useState(0);
   const [reloadReplies, setReloadReplies] = useState(null);
 
-  const handleLike = async () => {
-    if (loading) return;
-    try {
-      setLoading(true);
-      await reviewService.likeReview(review.id);
-      setLiked(true);
-      setDisliked(false);
-      onUpdate?.();
-    } catch (error) {
-      console.error('Like error:', error);
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    setCurrentReview(review);
+  }, [review]);
+
+  const handleMutationSuccess = (reviewId, reviewData) => {
+    setCurrentReview(reviewData);
+    onUpdate?.();
   };
 
-  const handleDislike = async () => {
+  const { likeReview, dislikeReview, isLiking, isDisliking } = useReviewMutations(
+    review.id,
+    companyId,
+    handleMutationSuccess
+  );
+
+  const liked = currentReview.user_like_status === 'like';
+  const disliked = currentReview.user_like_status === 'dislike';
+  const loading = isLiking || isDisliking;
+
+  const handleLike = () => {
     if (loading) return;
-    try {
-      setLoading(true);
-      await reviewService.dislikeReview(review.id);
-      setDisliked(true);
-      setLiked(false);
-      onUpdate?.();
-    } catch (error) {
-      console.error('Dislike error:', error);
-    } finally {
-      setLoading(false);
-    }
+    likeReview();
+  };
+
+  const handleDislike = () => {
+    if (loading) return;
+    dislikeReview();
   };
 
   return (
     <div className="review-item">
       <div className="review-header">
         <div className="review-title-score">
-          <h4>{review.title}</h4>
-          <div className="score-badge">⭐ {review.score}/10</div>
+          <h4>{currentReview.title}</h4>
+          <div className="score-badge">⭐ {currentReview.score}/10</div>
         </div>
-        {review.is_anonymous ? (
+        {currentReview.is_anonymous ? (
           <span className="anonymous-badge">Ẩn danh</span>
         ) : (
           <span className="review-author">Người dùng</span>
@@ -58,7 +55,7 @@ const ReviewItem = ({ review, isAuthenticated, onUpdate }) => {
       </div>
 
       <div className="review-content">
-        <p>{review.reviews_content}</p>
+        <p>{currentReview.reviews_content}</p>
       </div>
 
       <div className="review-actions">
@@ -69,14 +66,14 @@ const ReviewItem = ({ review, isAuthenticated, onUpdate }) => {
               onClick={handleLike}
               disabled={loading}
             >
-              👍 {review.total_like || 0}
+              👍 {currentReview.total_like || 0}
             </button>
             <button
               className={`action-btn ${disliked ? 'active' : ''}`}
               onClick={handleDislike}
               disabled={loading}
             >
-              👎 {review.total_dislike || 0}
+              👎 {currentReview.total_dislike || 0}
             </button>
           </>
         )}
@@ -84,7 +81,7 @@ const ReviewItem = ({ review, isAuthenticated, onUpdate }) => {
           className="action-btn"
           onClick={() => setShowReplies(!showReplies)}
         >
-          💬 {review.total_reply || 0} trả lời
+          💬 {currentReview.total_reply || 0} trả lời
         </button>
         {isAuthenticated && (
           <button
@@ -98,19 +95,14 @@ const ReviewItem = ({ review, isAuthenticated, onUpdate }) => {
 
       {showReplyForm && isAuthenticated && (
         <CreateReplyForm
-          reviewId={review.id}
+          reviewId={currentReview.id}
           onSuccess={async () => {
-            console.log('Reply created successfully');
             setShowReplyForm(false);
-            // Always show replies after creating one
             setShowReplies(true);
-            // Wait a bit for DB to commit, then reload
             setTimeout(() => {
               if (reloadReplies) {
-                console.log('Reloading replies via callback');
                 reloadReplies();
               } else {
-                console.log('Reloading replies via refreshKey');
                 setReplyRefreshKey(prev => prev + 1);
               }
             }, 300);
@@ -123,8 +115,8 @@ const ReviewItem = ({ review, isAuthenticated, onUpdate }) => {
       {showReplies && (
         <div className="replies-section">
           <ReplyList 
-            key={`replies-${review.id}-${replyRefreshKey}`}
-            reviewId={review.id} 
+            key={`replies-${currentReview.id}-${replyRefreshKey}`}
+            reviewId={currentReview.id} 
             refreshKey={replyRefreshKey}
             onMounted={setReloadReplies}
           />
@@ -135,4 +127,3 @@ const ReviewItem = ({ review, isAuthenticated, onUpdate }) => {
 };
 
 export default ReviewItem;
-

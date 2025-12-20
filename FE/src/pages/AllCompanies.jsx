@@ -36,7 +36,6 @@ const AllCompanies = () => {
         setError(response.message || 'Không thể tải danh sách công ty');
       }
     } catch (err) {
-      console.error('Load companies error:', err);
       setError(err.message || err.error || 'Không thể tải danh sách công ty');
     } finally {
       setLoading(false);

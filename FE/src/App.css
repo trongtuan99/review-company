@@ -15,18 +15,11 @@ body {
 
 .app {
   min-height: 100vh;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.main-content {
   flex: 1;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0;
-  background: var(--glassdoor-gray-bg);
-  min-height: calc(100vh - 64px - 200px); /* Subtract navbar and footer height */
 }
 
 /* Common Button Styles */

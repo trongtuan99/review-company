@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { companyService } from '../services/companyService';
-import { reviewService } from '../services/reviewService';
-import { favoriteService } from '../services/favoriteService';
+import { useCompany, useReviews, useFavoriteStatus, useFavoriteMutations } from '../hooks';
 import ReviewList from '../components/ReviewList';
 import CreateReviewForm from '../components/CreateReviewForm';
 import './CompanyDetail.css';
@@ -11,67 +9,56 @@ import './CompanyDetail.css';
 const CompanyDetail = () => {
   const { id } = useParams();
   const { isAuthenticated } = useAuth();
-  const [company, setCompany] = useState(null);
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [showReviewForm, setShowReviewForm] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(false);
-  const [favoriteLoading, setFavoriteLoading] = useState(false);
 
-  useEffect(() => {
-    loadCompanyData();
-    if (isAuthenticated) {
-      checkFavoriteStatus();
+  const { 
+    data: companyResponse, 
+    isLoading: companyLoading, 
+    error: companyError,
+    refetch: refetchCompany 
+  } = useCompany(id);
+
+  const { 
+    data: reviewsResponse, 
+    isLoading: reviewsLoading,
+    refetch: refetchReviews 
+  } = useReviews(id);
+
+  const { 
+    data: favoriteStatusResponse,
+    refetch: refetchFavoriteStatus 
+  } = useFavoriteStatus(id, isAuthenticated);
+
+  const { addFavoriteAsync, removeFavoriteAsync, isAdding, isRemoving } = useFavoriteMutations();
+
+  let company = null;
+  if (companyResponse) {
+    if (companyResponse.data && typeof companyResponse.data === 'object' && companyResponse.data.id) {
+      company = companyResponse.data;
+    } else if (companyResponse.id) {
+      company = companyResponse;
     }
-  }, [id, isAuthenticated]);
-
-  const loadCompanyData = async () => {
-    try {
-      setLoading(true);
-      setError('');
-      
-      const [companyRes, reviewsRes] = await Promise.all([
-        companyService.getCompanyOverview(id),
-        reviewService.getReviews(id),
-      ]);
-
-      console.log('Company response:', companyRes); // Debug
-      console.log('Reviews response:', reviewsRes); // Debug
-
-      // Backend returns status: 'ok' (not 'success')
-      if (companyRes.status === 'ok' || companyRes.status === 'success') {
-        setCompany(companyRes.data);
-      } else {
-        setError(companyRes.message || 'Không tìm thấy công ty');
-      }
-      
-      if (reviewsRes.status === 'ok' || reviewsRes.status === 'success') {
-        setReviews(reviewsRes.data || []);
-      }
-    } catch (err) {
-      console.error('Load company error:', err); // Debug
-      setError(err.message || err.error || 'Không thể tải thông tin công ty');
-    } finally {
-      setLoading(false);
+  }
+  
+  let reviews = [];
+  if (reviewsResponse) {
+    if (Array.isArray(reviewsResponse.data)) {
+      reviews = reviewsResponse.data;
+    } else if (Array.isArray(reviewsResponse)) {
+      reviews = reviewsResponse;
     }
-  };
+  }
+  
+  const isFavorited = favoriteStatusResponse?.data?.is_favorited || false;
+  const loading = companyLoading || reviewsLoading;
+  const hasError = companyError || (companyResponse?.status && companyResponse?.status !== 'ok' && companyResponse?.status !== 'success');
+  const error = hasError ? (companyError?.message || companyResponse?.message || 'Có lỗi xảy ra') : '';
+  const favoriteLoading = isAdding || isRemoving;
 
   const handleReviewCreated = () => {
     setShowReviewForm(false);
-    loadCompanyData();
-  };
-
-  const checkFavoriteStatus = async () => {
-    if (!isAuthenticated) return;
-    try {
-      const response = await favoriteService.checkFavorite(id);
-      if (response.status === 'ok' || response.status === 'success') {
-        setIsFavorited(response.data?.is_favorited || false);
-      }
-    } catch (err) {
-      console.error('Check favorite error:', err);
-    }
+    refetchReviews();
+    refetchCompany();
   };
 
   const handleToggleFavorite = async () => {
@@ -81,19 +68,14 @@ const CompanyDetail = () => {
     }
 
     try {
-      setFavoriteLoading(true);
       if (isFavorited) {
-        await favoriteService.removeFavorite(id);
-        setIsFavorited(false);
+        await removeFavoriteAsync(id);
       } else {
-        await favoriteService.addFavorite(id);
-        setIsFavorited(true);
+        await addFavoriteAsync(id);
       }
+      refetchFavoriteStatus();
     } catch (err) {
-      console.error('Toggle favorite error:', err);
       alert(err.message || 'Không thể cập nhật yêu thích');
-    } finally {
-      setFavoriteLoading(false);
     }
   };
 
@@ -101,7 +83,7 @@ const CompanyDetail = () => {
     return <div className="loading">Đang tải...</div>;
   }
 
-  if (error) {
+  if (hasError && error) {
     return (
       <div className="company-detail-container">
         <Link to="/" className="back-link">← Quay lại</Link>
@@ -110,7 +92,7 @@ const CompanyDetail = () => {
     );
   }
 
-  if (!company && !loading) {
+  if (!company && !loading && !companyLoading) {
     return (
       <div className="company-detail-container">
         <Link to="/" className="back-link">← Quay lại</Link>
@@ -119,13 +101,17 @@ const CompanyDetail = () => {
     );
   }
 
+  if (!company || companyLoading) {
+    return <div className="loading">Đang tải...</div>;
+  }
+
   return (
     <div className="company-detail-container">
       <Link to="/" className="back-link">← Quay lại</Link>
       
       <div className="company-header">
         <div className="company-title-section">
-          <h1>{company.name}</h1>
+          <h1>{company?.name || 'N/A'}</h1>
           {isAuthenticated && (
             <button
               className={`favorite-btn ${isFavorited ? 'favorited' : ''}`}
@@ -190,7 +176,10 @@ const CompanyDetail = () => {
           />
         )}
 
-        <ReviewList reviews={reviews} onUpdate={loadCompanyData} />
+        <ReviewList reviews={reviews} onUpdate={() => {
+          refetchReviews();
+          refetchCompany();
+        }} companyId={id} />
       </div>
     </div>
   );

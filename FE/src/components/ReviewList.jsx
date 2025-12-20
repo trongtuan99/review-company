@@ -4,7 +4,7 @@ import { reviewService } from '../services/reviewService';
 import ReviewItem from './ReviewItem';
 import './ReviewList.css';
 
-const ReviewList = ({ reviews, onUpdate }) => {
+const ReviewList = ({ reviews, onUpdate, companyId }) => {
   const { isAuthenticated } = useAuth();
 
   if (!reviews || reviews.length === 0) {
@@ -23,6 +23,7 @@ const ReviewList = ({ reviews, onUpdate }) => {
           review={review}
           isAuthenticated={isAuthenticated}
           onUpdate={onUpdate}
+          companyId={companyId}
         />
       ))}
     </div>

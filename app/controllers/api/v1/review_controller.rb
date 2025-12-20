@@ -8,7 +8,11 @@ class Api::V1::ReviewController < ApplicationController
 
   def index
     data = @company.reviews.all
-    render json: json_with_success(data: data, default_serializer: ReviewSerializer)
+    render json: json_with_success(
+      data: data, 
+      default_serializer: ReviewSerializer,
+      options: { scope: current_user }
+    )
   end
 
   def create
@@ -29,29 +33,54 @@ class Api::V1::ReviewController < ApplicationController
   end
 
   def like
-    like_params = like_dislike_params(:like, @like_record, current_user.id, @review.id)
-    produce_service.create(like_params)
-    render json: json_with_success(message: I18n.t('controller.base.success'))
+    handle_like_dislike(:like)
   end
 
   def dislike
-    dislike_params = like_dislike_params(:dislike, @like_record, current_user.id, @review.id)
-    produce_service.create(dislike_params)
-    render json: json_with_success(message: I18n.t('controller.base.success'))
+    handle_like_dislike(:dislike)
   end
 
   private
 
-  def like_dislike_params(status, like_record, user_id, review_id)
-    status = like_record&.default? ? status : :default
-    {
-      like_id: like_record&.id,
-      action: like_record.present? ? :update : :create,
-      status: status,
-      user_id: user_id,
-      review_id: review_id,
-      tenant: Apartment::Tenant.current
-    }
+  def handle_like_dislike(status)
+    # Logic:
+    # - If clicking like/dislike when already in that state -> toggle to default
+    # - If clicking like/dislike when in opposite state -> switch to new state
+    # - If clicking like/dislike when in default state -> set to new state
+    if @like_record.present?
+      current_status = @like_record.status.to_sym
+      if current_status == status
+        # Already in this state, toggle to default
+        new_status = :default
+      else
+        # Switch to the requested status
+        new_status = status
+      end
+      @like_record.update!(status: new_status)
+    else
+      # Create new like record with the requested status
+      @like_record = Like.create!(
+        user_id: current_user.id,
+        review_id: @review.id,
+        status: status
+      )
+    end
+    
+    # Reload review to get updated total_like and total_dislike
+    # The after_commit callback should have already updated these values
+    # Reload review and reset association cache to ensure serializer can find the like record
+    @review.reload
+    # Reset association cache so serializer will query fresh from database
+    @review.association(:likes).reset
+    
+    render json: json_with_success(
+      data: @review, 
+      default_serializer: ReviewSerializer,
+      options: { scope: current_user },
+      message: I18n.t('controller.base.success')
+    )
+  rescue => e
+    render json: json_with_error(message: e.message)
   end
 
   def validate_update
@@ -74,10 +103,6 @@ class Api::V1::ReviewController < ApplicationController
 
   def get_like_record
     @like_record = Like.get_like_review_by_user_id(params[:id], current_user.id).first
-  end
-
-  def produce_service
-    Interactors::Kafka::Producers::LikeEvent
   end
 
 end

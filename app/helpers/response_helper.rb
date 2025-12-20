@@ -15,14 +15,16 @@ module ResponseHelper
       return response
     end
     instance_options = options[:serialize] ? options[:serialize] : {}
-    response[:data] = ActiveModelSerializers::SerializableResource.new(data, instance_options.merge(include: '**')).as_json
+    serializer_options = { include: '**' }
+    serializer_options[:scope] = options[:scope] if options[:scope]
+    response[:data] = ActiveModelSerializers::SerializableResource.new(data, instance_options.merge(serializer_options)).as_json
     response
   end
 
-  def json_with_empty_success
+  def json_with_empty_success(message: SUCCESS_MESSAGE)
     {
       status:  SUCCESS_STATUS,
-      message: SUCCESS_MESSAGE,
+      message: message,
       data:    nil
     }
   end

@@ -41,22 +41,18 @@ const CreateCompanyForm = ({ searchQuery, onSuccess, onCancel }) => {
     try {
       setLoading(true);
       const response = await companyService.createCompany(formData);
-      console.log('Create company response:', response); // Debug
       
-      // Backend returns status: 'ok' (not 'success')
       if (response.status === 'ok' || response.status === 'success') {
         const company = response.data;
         if (onSuccess) {
           onSuccess(company);
         } else {
-          // Redirect to company detail page
           navigate(`/companies/${company.id}`);
         }
       } else {
         setError(response.message || 'Không thể tạo công ty');
       }
     } catch (err) {
-      console.error('Create company error:', err); // Debug
       setError(err.message || err.error || 'Không thể tạo công ty');
     } finally {
       setLoading(false);

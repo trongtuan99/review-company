@@ -1,0 +1,31 @@
+.main-layout {
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--glassdoor-gray-bg);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.main-content-wrapper {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  background: var(--glassdoor-gray-bg);
+  height: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .main-content-wrapper {
+    padding: 0;
+  }
+}
+

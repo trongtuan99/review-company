@@ -19,9 +19,7 @@ const CreateReplyForm = ({ reviewId, onSuccess, onCancel }) => {
     try {
       setLoading(true);
       const response = await replyService.createReply(reviewId, content);
-      console.log('Create reply response:', response); // Debug
       
-      // Backend returns status: 'ok' (not 'success')
       if (response.status === 'ok' || response.status === 'success') {
         onSuccess?.();
         setContent('');
@@ -29,7 +27,6 @@ const CreateReplyForm = ({ reviewId, onSuccess, onCancel }) => {
         setError(response.message || 'Không thể tạo trả lời');
       }
     } catch (err) {
-      console.error('Create reply error:', err); // Debug
       setError(err.message || err.error || 'Không thể tạo trả lời');
     } finally {
       setLoading(false);

@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { userService } from '../services/userService';
-import { favoriteService } from '../services/favoriteService';
+import { useFavorites, useFavoriteMutations } from '../hooks';
 import ProtectedRoute from '../components/ProtectedRoute';
+import ConfirmModal from '../components/ConfirmModal';
 import './Profile.css';
 
 const Profile = () => {
@@ -13,8 +14,13 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-  const [favoriteCompanies, setFavoriteCompanies] = useState([]);
-  const [favoritesLoading, setFavoritesLoading] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [companyIdToRemove, setCompanyIdToRemove] = useState(null);
+
+  // Sử dụng React Query để fetch favorites - tự động cache và refetch
+  const { data: favoritesResponse, isLoading: favoritesLoading, refetch: refetchFavorites } = useFavorites();
+  const favoriteCompanies = favoritesResponse?.data || [];
+  const { removeFavoriteAsync, isRemoving } = useFavoriteMutations();
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -24,7 +30,6 @@ const Profile = () => {
   useEffect(() => {
     if (user) {
       loadProfile();
-      loadFavoriteCompanies();
     }
   }, [user]);
 
@@ -41,7 +46,6 @@ const Profile = () => {
         email: user?.email || ''
       });
     } catch (err) {
-      console.error('Load profile error:', err);
       setError(err.message || 'Không thể tải thông tin profile');
     } finally {
       setLoading(false);
@@ -59,40 +63,29 @@ const Profile = () => {
     e.preventDefault();
     try {
       setError('');
-      // Assuming we have an updateProfile endpoint
-      // const response = await userService.updateProfile(formData);
-      // For now, just update local state
       setProfile({ ...profile, ...formData });
       setIsEditing(false);
-      // Show success message
       alert('Cập nhật profile thành công!');
     } catch (err) {
-      console.error('Update profile error:', err);
       setError(err.message || 'Không thể cập nhật profile');
     }
   };
 
-  const loadFavoriteCompanies = async () => {
-    try {
-      setFavoritesLoading(true);
-      const response = await favoriteService.getFavorites();
-      if (response.status === 'ok' || response.status === 'success') {
-        setFavoriteCompanies(response.data || []);
-      }
-    } catch (err) {
-      console.error('Load favorites error:', err);
-    } finally {
-      setFavoritesLoading(false);
-    }
+  const handleRemoveFavoriteClick = (companyId) => {
+    setCompanyIdToRemove(companyId);
+    setShowConfirmModal(true);
   };
 
-  const handleRemoveFavorite = async (companyId) => {
+  const handleRemoveFavorite = async () => {
+    if (!companyIdToRemove) return;
+    
     try {
-      await favoriteService.removeFavorite(companyId);
-      setFavoriteCompanies(favoriteCompanies.filter(c => c.id !== companyId));
+      await removeFavoriteAsync(companyIdToRemove);
     } catch (err) {
-      console.error('Remove favorite error:', err);
-      alert('Không thể xóa khỏi danh sách yêu thích');
+      const errorMessage = err.response?.data?.message || err.message || err.error || 'Không thể xóa khỏi danh sách yêu thích';
+      alert(errorMessage);
+    } finally {
+      setCompanyIdToRemove(null);
     }
   };
 
@@ -280,10 +273,11 @@ const Profile = () => {
                     </Link>
                     <button
                       className="remove-favorite-btn"
-                      onClick={() => handleRemoveFavorite(company.id)}
+                      onClick={() => handleRemoveFavoriteClick(company.id)}
                       title="Xóa khỏi yêu thích"
+                      disabled={isRemoving}
                     >
-                      ✕
+                      {isRemoving ? '...' : '✕'}
                     </button>
                   </div>
                 ))}
@@ -291,6 +285,20 @@ const Profile = () => {
             )}
           </div>
         </div>
+
+        <ConfirmModal
+          isOpen={showConfirmModal}
+          onClose={() => {
+            setShowConfirmModal(false);
+            setCompanyIdToRemove(null);
+          }}
+          onConfirm={handleRemoveFavorite}
+          title="Xóa khỏi danh sách yêu thích"
+          message="Bạn có chắc chắn muốn xóa công ty này khỏi danh sách yêu thích?"
+          confirmText="Xóa"
+          cancelText="Hủy"
+          type="danger"
+        />
       </div>
     </ProtectedRoute>
   );

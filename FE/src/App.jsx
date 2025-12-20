@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import MainLayout from './components/MainLayout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -14,15 +14,25 @@ import Profile from './pages/Profile';
 import { API_BASE_URL } from './config/api';
 import './App.css';
 
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
+
 function App() {
   const isDevelopment = import.meta.env.DEV;
 
   return (
-    <AuthProvider>
-      <Router>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Router>
         <div className="app">
-          <Navbar />
-          <main className="main-content">
+          <MainLayout>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -34,8 +44,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-          </main>
-          <Footer />
+          </MainLayout>
           {isDevelopment && (
             <div style={{
               position: 'fixed',
@@ -58,6 +67,7 @@ function App() {
         </div>
       </Router>
     </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
