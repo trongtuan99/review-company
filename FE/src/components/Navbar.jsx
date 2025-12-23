@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import ThemeToggle from './ThemeToggle';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -33,6 +34,7 @@ const Navbar = () => {
           <Link to="/faq" className="navbar-link">
             FAQ
           </Link>
+          <ThemeToggle />
           {isAuthenticated ? (
             <div className="user-menu-wrapper">
               <button
@@ -111,6 +113,10 @@ const Navbar = () => {
           >
             FAQ
           </Link>
+          <div className="mobile-theme-toggle">
+            <span>Chế độ hiển thị</span>
+            <ThemeToggle />
+          </div>
           {isAuthenticated ? (
             <>
               <Link

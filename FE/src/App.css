@@ -75,7 +75,7 @@ body {
   display: block;
   margin-bottom: 5px;
   font-weight: 500;
-  color: #333;
+  color: var(--glassdoor-gray);
 }
 
 .form-group input,
@@ -122,6 +122,12 @@ body {
   font-size: 14px;
 }
 
+[data-theme="dark"] .error-message {
+  background-color: rgba(153, 27, 27, 0.2);
+  color: #fca5a5;
+  border-color: rgba(252, 165, 165, 0.3);
+}
+
 /* Loading */
 .loading {
   text-align: center;
@@ -144,6 +150,12 @@ body {
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+}
+
+[data-theme="dark"] .error {
+  background-color: rgba(153, 27, 27, 0.2);
+  color: #fca5a5;
+  border-color: rgba(252, 165, 165, 0.3);
 }
 
 /* Responsive - Mobile */

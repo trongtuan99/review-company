@@ -213,23 +213,65 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="hero-section">
+        <div className="hero-bg-decoration">
+          <div className="hero-circle hero-circle-1"></div>
+          <div className="hero-circle hero-circle-2"></div>
+          <div className="hero-circle hero-circle-3"></div>
+        </div>
         <div className="hero-content">
-          <h1 className="hero-title">30k+ review từ 15.000 công ty khác nhau</h1>
-          <p className="hero-subtitle">Đánh giá công ty và tìm kiếm nơi làm việc tốt nhất cho sự nghiệp của bạn</p>
+          <div className="hero-badge">
+            <span className="badge-icon">🏆</span>
+            <span>Nền tảng đánh giá công ty #1 Việt Nam</span>
+          </div>
+          <h1 className="hero-title">
+            Khám phá <span className="highlight">30,000+</span> đánh giá
+            <br />từ <span className="highlight">15,000</span> công ty
+          </h1>
+          <p className="hero-subtitle">
+            Tìm hiểu môi trường làm việc thực tế, đọc review từ nhân viên
+            <br />và đưa ra quyết định nghề nghiệp đúng đắn
+          </p>
+          <div className="hero-stats">
+            <div className="hero-stat">
+              <span className="stat-number">30K+</span>
+              <span className="stat-label">Đánh giá</span>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="hero-stat">
+              <span className="stat-number">15K+</span>
+              <span className="stat-label">Công ty</span>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="hero-stat">
+              <span className="stat-number">50K+</span>
+              <span className="stat-label">Người dùng</span>
+            </div>
+          </div>
         </div>
         <div className="hero-search">
           <form onSubmit={handleSearch} className="hero-search-form">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tìm công ty"
-              className="hero-search-input"
-            />
+            <div className="search-input-wrapper">
+              <span className="search-icon">🔍</span>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Nhập tên công ty bạn muốn tìm..."
+                className="hero-search-input"
+              />
+            </div>
             <button type="submit" className="hero-search-btn">
-              Tìm kiếm
+              <span className="btn-text">Tìm kiếm</span>
+              <span className="btn-icon">→</span>
             </button>
           </form>
+          <div className="search-suggestions">
+            <span className="suggestion-label">Phổ biến:</span>
+            <button type="button" onClick={() => { setSearchQuery('FPT'); }} className="suggestion-tag">FPT</button>
+            <button type="button" onClick={() => { setSearchQuery('Viettel'); }} className="suggestion-tag">Viettel</button>
+            <button type="button" onClick={() => { setSearchQuery('VNG'); }} className="suggestion-tag">VNG</button>
+            <button type="button" onClick={() => { setSearchQuery('Grab'); }} className="suggestion-tag">Grab</button>
+          </div>
         </div>
       </div>
 

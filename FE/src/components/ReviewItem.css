@@ -148,6 +148,19 @@
   background: linear-gradient(to right, rgba(59, 130, 246, 0.05), transparent);
 }
 
+/* Dark mode overrides */
+[data-theme="dark"] .review-section.pros {
+  background: linear-gradient(to right, rgba(16, 185, 129, 0.15), transparent);
+}
+
+[data-theme="dark"] .review-section.cons {
+  background: linear-gradient(to right, rgba(239, 68, 68, 0.15), transparent);
+}
+
+[data-theme="dark"] .review-section.advice {
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.15), transparent);
+}
+
 .review-section .section-label {
   display: block;
   font-weight: 600;

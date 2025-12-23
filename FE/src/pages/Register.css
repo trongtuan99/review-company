@@ -72,7 +72,7 @@
 }
 
 .step.active {
-  background: white;
+  background: var(--glassdoor-white);
   color: var(--glassdoor-green);
   border-color: var(--glassdoor-green);
 }

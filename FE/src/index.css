@@ -4,8 +4,15 @@
   box-sizing: border-box;
 }
 
+/* Smooth theme transition for all elements */
+*,
+*::before,
+*::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
 :root {
-  /* Glassdoor Color Palette */
+  /* Glassdoor Color Palette - Light Theme */
   --glassdoor-green: #00A86B;
   --glassdoor-green-dark: #0CAA41;
   --glassdoor-green-light: #E6F5F0;
@@ -18,7 +25,19 @@
   --glassdoor-border: #E0E0E0;
   --glassdoor-shadow: rgba(0, 0, 0, 0.08);
   --glassdoor-shadow-hover: rgba(0, 0, 0, 0.12);
-  
+
+  /* Additional colors for components */
+  --text-primary: #2C2C2C;
+  --text-secondary: #6B6B6B;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F5F5;
+  --bg-tertiary: #FAFAFA;
+  --card-bg: #FFFFFF;
+  --input-bg: #FFFFFF;
+  --hero-bg-start: #f0fdf4;
+  --hero-bg-mid: #dcfce7;
+  --hero-bg-end: #bbf7d0;
+
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -30,6 +49,39 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Transition for theme switching */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --glassdoor-green: #10B981;
+  --glassdoor-green-dark: #059669;
+  --glassdoor-green-light: rgba(16, 185, 129, 0.15);
+  --glassdoor-blue: #3B82F6;
+  --glassdoor-blue-light: rgba(59, 130, 246, 0.15);
+  --glassdoor-gray: #F3F4F6;
+  --glassdoor-gray-light: #9CA3AF;
+  --glassdoor-gray-bg: #111827;
+  --glassdoor-white: #1F2937;
+  --glassdoor-border: #374151;
+  --glassdoor-shadow: rgba(0, 0, 0, 0.3);
+  --glassdoor-shadow-hover: rgba(0, 0, 0, 0.5);
+
+  /* Additional colors for components */
+  --text-primary: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  --bg-primary: #1F2937;
+  --bg-secondary: #111827;
+  --bg-tertiary: #0D1117;
+  --card-bg: #1F2937;
+  --input-bg: #374151;
+  --hero-bg-start: #064E3B;
+  --hero-bg-mid: #065F46;
+  --hero-bg-end: #047857;
+
+  color-scheme: dark;
 }
 
 body {

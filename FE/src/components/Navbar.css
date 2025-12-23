@@ -242,6 +242,18 @@
   color: var(--glassdoor-gray);
 }
 
+.mobile-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  color: var(--glassdoor-gray);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  background: var(--glassdoor-gray-bg);
+}
+
 /* Responsive - Mobile */
 @media (max-width: 768px) {
   .navbar-container {

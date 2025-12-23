@@ -1,9 +1,9 @@
 .footer {
-  background: var(--glassdoor-gray);
-  color: var(--glassdoor-white);
+  background: #1F2937;
+  color: #F3F4F6;
   flex-shrink: 0;
   flex-grow: 0;
-  border-top: 1px solid var(--glassdoor-border);
+  border-top: 1px solid #374151;
   position: relative;
   z-index: 1;
 }

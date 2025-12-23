@@ -1,6 +1,6 @@
 .write-review-page {
   min-height: 100vh;
-  background: #f8f9fa;
+  background: var(--glassdoor-gray-bg);
   padding: 40px 20px;
 }
 
@@ -15,23 +15,24 @@
 }
 
 .page-header h1 {
-  color: #1a1a2e;
+  color: var(--glassdoor-gray);
   font-size: 2rem;
   margin-bottom: 10px;
 }
 
 .page-header p {
-  color: #666;
+  color: var(--glassdoor-gray-light);
   font-size: 1.1rem;
 }
 
 /* Auth Required */
 .auth-required {
-  background: white;
+  background: var(--glassdoor-white);
   border-radius: 12px;
   padding: 60px 40px;
   text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px var(--glassdoor-shadow);
+  border: 1px solid var(--glassdoor-border);
 }
 
 .auth-icon {
@@ -40,12 +41,12 @@
 }
 
 .auth-required h2 {
-  color: #1a1a2e;
+  color: var(--glassdoor-gray);
   margin-bottom: 15px;
 }
 
 .auth-required p {
-  color: #666;
+  color: var(--glassdoor-gray-light);
   margin-bottom: 30px;
 }
 
@@ -57,11 +58,12 @@
 
 /* Success State */
 .success-state {
-  background: white;
+  background: var(--glassdoor-white);
   border-radius: 12px;
   padding: 60px 40px;
   text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px var(--glassdoor-shadow);
+  border: 1px solid var(--glassdoor-border);
 }
 
 .success-icon {
@@ -70,12 +72,12 @@
 }
 
 .success-state h2 {
-  color: #10b981;
+  color: var(--glassdoor-green);
   margin-bottom: 15px;
 }
 
 .success-state p {
-  color: #666;
+  color: var(--glassdoor-gray-light);
   margin-bottom: 30px;
 }
 
@@ -89,11 +91,11 @@
 .guidelines-reminder {
   display: flex;
   gap: 15px;
-  background: #f0f4ff;
+  background: var(--glassdoor-blue-light);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 30px;
-  border-left: 4px solid #4361ee;
+  border-left: 4px solid var(--glassdoor-blue);
 }
 
 .reminder-icon {
@@ -102,19 +104,19 @@
 }
 
 .reminder-content strong {
-  color: #1a1a2e;
+  color: var(--glassdoor-gray);
   display: block;
   margin-bottom: 5px;
 }
 
 .reminder-content p {
-  color: #666;
+  color: var(--glassdoor-gray-light);
   margin: 0;
   font-size: 0.95rem;
 }
 
 .reminder-content a {
-  color: #4361ee;
+  color: var(--glassdoor-blue);
   text-decoration: none;
 }
 
@@ -122,28 +124,19 @@
   text-decoration: underline;
 }
 
-/* Error Message */
-.error-message {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  padding: 15px 20px;
-  color: #dc2626;
-  margin-bottom: 20px;
-}
-
 /* Review Form */
 .review-form {
-  background: white;
+  background: var(--glassdoor-white);
   border-radius: 12px;
   padding: 30px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px var(--glassdoor-shadow);
+  border: 1px solid var(--glassdoor-border);
 }
 
 .form-section {
   margin-bottom: 35px;
   padding-bottom: 35px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--glassdoor-border);
 }
 
 .form-section:last-of-type {
@@ -153,7 +146,7 @@
 }
 
 .form-section h3 {
-  color: #1a1a2e;
+  color: var(--glassdoor-gray);
   font-size: 1.1rem;
   margin-bottom: 20px;
   display: flex;
@@ -173,15 +166,17 @@
 .search-input {
   width: 100%;
   padding: 12px 15px;
-  border: 2px solid #ddd;
+  border: 2px solid var(--glassdoor-border);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s;
+  background: var(--glassdoor-white);
+  color: var(--glassdoor-gray);
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #4361ee;
+  border-color: var(--glassdoor-green);
 }
 
 .company-dropdown {
@@ -189,10 +184,10 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--glassdoor-white);
+  border: 1px solid var(--glassdoor-border);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px var(--glassdoor-shadow-hover);
   max-height: 300px;
   overflow-y: auto;
   z-index: 100;
@@ -203,7 +198,7 @@
   padding: 12px 15px;
   cursor: pointer;
   transition: background 0.2s;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--glassdoor-border);
 }
 
 .dropdown-item:last-child {
@@ -211,17 +206,17 @@
 }
 
 .dropdown-item:hover {
-  background: #f0f4ff;
+  background: var(--glassdoor-green-light);
 }
 
 .dropdown-item .company-name {
   font-weight: 500;
-  color: #1a1a2e;
+  color: var(--glassdoor-gray);
 }
 
 .dropdown-item .company-info-small {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--glassdoor-gray-light);
   margin-top: 3px;
 }
 
@@ -231,25 +226,25 @@
   gap: 10px;
   margin-top: 12px;
   padding: 10px 15px;
-  background: #e8f5e9;
+  background: var(--glassdoor-green-light);
   border-radius: 8px;
 }
 
 .selected-label {
-  color: #666;
+  color: var(--glassdoor-gray-light);
   font-size: 0.9rem;
 }
 
 .selected-name {
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--glassdoor-gray);
 }
 
 .clear-btn {
   margin-left: auto;
   background: none;
   border: none;
-  color: #999;
+  color: var(--glassdoor-gray-light);
   cursor: pointer;
   padding: 5px;
   font-size: 1rem;
@@ -267,10 +262,10 @@
 }
 
 .rating-label {
-  color: #666;
+  color: var(--glassdoor-gray-light);
   font-size: 0.95rem;
   padding: 5px 12px;
-  background: #f0f4ff;
+  background: var(--glassdoor-blue-light);
   border-radius: 20px;
 }
 
@@ -281,7 +276,7 @@
 
 .form-group label {
   display: block;
-  color: #333;
+  color: var(--glassdoor-gray);
   font-weight: 500;
   margin-bottom: 8px;
   font-size: 0.95rem;
@@ -292,18 +287,20 @@
 .form-textarea {
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--glassdoor-border);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s, box-shadow 0.3s;
+  background: var(--glassdoor-white);
+  color: var(--glassdoor-gray);
 }
 
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #4361ee;
-  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+  border-color: var(--glassdoor-green);
+  box-shadow: 0 0 0 3px var(--glassdoor-green-light);
 }
 
 .form-textarea {
@@ -325,7 +322,7 @@
   display: block;
   text-align: right;
   font-size: 0.85rem;
-  color: #999;
+  color: var(--glassdoor-gray-light);
   margin-top: 5px;
 }
 
@@ -344,7 +341,7 @@
 }
 
 .form-hint {
-  color: #666;
+  color: var(--glassdoor-gray-light);
   font-size: 0.9rem;
   margin-top: 8px;
   padding-left: 28px;
@@ -357,45 +354,7 @@
   justify-content: flex-end;
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid #eee;
-}
-
-.btn-primary {
-  padding: 12px 30px;
-  background: #4361ee;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.btn-primary:hover {
-  background: #3451d1;
-}
-
-.btn-primary:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  padding: 12px 30px;
-  background: white;
-  color: #666;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s;
-  text-decoration: none;
-}
-
-.btn-secondary:hover {
-  background: #f5f5f5;
+  border-top: 1px solid var(--glassdoor-border);
 }
 
 @media (max-width: 768px) {

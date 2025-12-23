@@ -1,20 +1,21 @@
 .privacy-page {
   min-height: 100vh;
-  background: #f8f9fa;
+  background: var(--glassdoor-gray-bg);
   padding: 40px 20px;
 }
 
 .privacy-container {
   max-width: 800px;
   margin: 0 auto;
-  background: white;
+  background: var(--glassdoor-white);
   border-radius: 12px;
   padding: 40px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px var(--glassdoor-shadow);
+  border: 1px solid var(--glassdoor-border);
 }
 
 .privacy-container h1 {
-  color: #1a1a2e;
+  color: var(--glassdoor-gray);
   font-size: 2rem;
   margin-bottom: 10px;
   text-align: center;
@@ -22,11 +23,11 @@
 
 .last-updated {
   text-align: center;
-  color: #666;
+  color: var(--glassdoor-gray-light);
   font-size: 0.9rem;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--glassdoor-border);
 }
 
 .privacy-section {
@@ -34,21 +35,21 @@
 }
 
 .privacy-section h2 {
-  color: #1a1a2e;
+  color: var(--glassdoor-gray);
   font-size: 1.3rem;
   margin-bottom: 15px;
   padding-bottom: 10px;
-  border-bottom: 2px solid #10b981;
+  border-bottom: 2px solid var(--glassdoor-green);
 }
 
 .privacy-section h3 {
-  color: #333;
+  color: var(--glassdoor-gray);
   font-size: 1.1rem;
   margin: 15px 0 10px;
 }
 
 .privacy-section p {
-  color: #555;
+  color: var(--glassdoor-gray-light);
   line-height: 1.8;
   margin-bottom: 15px;
 }
@@ -63,7 +64,7 @@
   position: relative;
   padding-left: 25px;
   margin-bottom: 10px;
-  color: #555;
+  color: var(--glassdoor-gray-light);
   line-height: 1.6;
 }
 

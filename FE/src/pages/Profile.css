@@ -1,6 +1,6 @@
 .profile-container {
   padding: 0;
-  background: linear-gradient(135deg, var(--glassdoor-gray-bg) 0%, #f0f0f0 100%);
+  background: var(--glassdoor-gray-bg);
   min-height: calc(100vh - 64px - 200px);
 }
 
@@ -151,7 +151,7 @@
 .role-badge {
   display: inline-block;
   padding: 6px 16px;
-  background: linear-gradient(135deg, var(--glassdoor-green-light) 0%, #d4f4e6 100%);
+  background: var(--glassdoor-green-light);
   color: var(--glassdoor-green-dark);
   border-radius: 16px;
   font-size: 14px;
@@ -401,7 +401,7 @@
 .profile-tabs {
   display: flex;
   border-bottom: 2px solid var(--glassdoor-border);
-  background: linear-gradient(135deg, var(--glassdoor-gray-bg) 0%, #f5f5f5 100%);
+  background: var(--glassdoor-gray-bg);
   position: relative;
 }
 
@@ -655,7 +655,7 @@
   height: 28px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--glassdoor-white);
   color: var(--glassdoor-gray-light);
   cursor: pointer;
   font-size: 16px;
@@ -664,6 +664,7 @@
   justify-content: center;
   transition: all 0.2s ease;
   opacity: 0;
+  box-shadow: 0 2px 4px var(--glassdoor-shadow);
 }
 
 .favorite-company-card:hover .remove-favorite-btn {
