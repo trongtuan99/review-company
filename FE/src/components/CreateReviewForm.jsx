@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useReviewMutationsExtended } from '../hooks/useReviewMutationsExtended';
 import StarRating from './StarRating';
 import './CreateReviewForm.css';
@@ -11,6 +12,9 @@ const CreateReviewForm = ({ companyId, onSuccess, onCancel }) => {
     job_title: '',
     custom_job_title: '',
     is_anonymous: false,
+    pros: '',
+    cons: '',
+    advice: '',
   });
   const [error, setError] = useState('');
   const { createReview, isCreating } = useReviewMutationsExtended(companyId);
@@ -38,12 +42,20 @@ const CreateReviewForm = ({ companyId, onSuccess, onCancel }) => {
     'Other'
   ];
 
+  const getRatingLabel = (score) => {
+    if (score <= 3) return 'Không hài lòng';
+    if (score <= 5) return 'Tạm được';
+    if (score <= 7) return 'Hài lòng';
+    if (score <= 9) return 'Rất hài lòng';
+    return 'Tuyệt vời';
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [name]: type === 'checkbox' ? checked : value,
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -55,16 +67,45 @@ const CreateReviewForm = ({ companyId, onSuccess, onCancel }) => {
       return;
     }
 
+    if (!formData.reviews_content || formData.reviews_content.length < 20) {
+      setError('Nội dung đánh giá phải có ít nhất 20 ký tự');
+      return;
+    }
+
     try {
+      // Combine pros, cons, advice into reviews_content using special delimiters
+      let fullContent = formData.reviews_content;
+      if (formData.pros) {
+        fullContent += `\n\n[PROS]\n${formData.pros}`;
+      }
+      if (formData.cons) {
+        fullContent += `\n\n[CONS]\n${formData.cons}`;
+      }
+      if (formData.advice) {
+        fullContent += `\n\n[ADVICE]\n${formData.advice}`;
+      }
+
       const submitData = {
-        ...formData,
+        title: formData.title,
+        reviews_content: fullContent,
+        score: formData.score,
         job_title: formData.job_title === 'Other' ? formData.custom_job_title : formData.job_title,
+        is_anonymous: formData.is_anonymous,
       };
-      delete submitData.custom_job_title;
-      
+
       await createReview({ companyId, reviewData: submitData });
       onSuccess?.();
-      setFormData({ title: '', reviews_content: '', score: 5, job_title: '', custom_job_title: '', is_anonymous: false });
+      setFormData({
+        title: '',
+        reviews_content: '',
+        score: 5,
+        job_title: '',
+        custom_job_title: '',
+        is_anonymous: false,
+        pros: '',
+        cons: '',
+        advice: '',
+      });
     } catch (err) {
       setError(err.message || err.error || 'Không thể tạo đánh giá');
     }
@@ -72,78 +113,151 @@ const CreateReviewForm = ({ companyId, onSuccess, onCancel }) => {
 
   return (
     <div className="create-review-form">
-      <h3>Viết đánh giá</h3>
+      <div className="form-header">
+        <h3>Viết đánh giá</h3>
+        <Link to="/guidelines" className="guidelines-link">
+          📋 Xem hướng dẫn
+        </Link>
+      </div>
+
       {error && <div className="error-message">{error}</div>}
+
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Tiêu đề *</label>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-            minLength={5}
-            maxLength={100}
-            placeholder="Tiêu đề đánh giá..."
-          />
+        {/* Rating Section */}
+        <div className="form-section">
+          <div className="section-title">Đánh giá tổng quan</div>
+          <div className="form-group">
+            <label>Điểm đánh giá (1-10) *</label>
+            <div className="rating-container">
+              <StarRating
+                value={formData.score}
+                onChange={(score) => setFormData(prev => ({ ...prev, score }))}
+              />
+              <span className="rating-label">{getRatingLabel(formData.score)}</span>
+            </div>
+          </div>
         </div>
-        <div className="form-group">
-          <label>Điểm đánh giá (1-10)</label>
-          <StarRating
-            value={formData.score}
-            onChange={(score) => setFormData({ ...formData, score })}
-          />
+
+        {/* Job Info Section */}
+        <div className="form-section">
+          <div className="section-title">Thông tin công việc</div>
+          <div className="form-group">
+            <label>Chức danh của bạn</label>
+            <select
+              name="job_title"
+              value={formData.job_title}
+              onChange={handleChange}
+              className="form-select"
+            >
+              <option value="">-- Chọn chức danh --</option>
+              {commonJobTitles.map((title) => (
+                <option key={title} value={title}>{title}</option>
+              ))}
+            </select>
+            {formData.job_title === 'Other' && (
+              <input
+                type="text"
+                name="custom_job_title"
+                value={formData.custom_job_title}
+                onChange={handleChange}
+                placeholder="Nhập chức danh của bạn..."
+                className="form-input mt-2"
+              />
+            )}
+          </div>
         </div>
-        <div className="form-group">
-          <label>Chức danh công việc tại công ty này</label>
-          <select
-            name="job_title"
-            value={formData.job_title}
-            onChange={handleChange}
-            className="form-select"
-          >
-            <option value="">-- Chọn chức danh --</option>
-            {commonJobTitles.map((title) => (
-              <option key={title} value={title}>
-                {title}
-              </option>
-            ))}
-          </select>
-          {formData.job_title === 'Other' && (
+
+        {/* Review Content Section */}
+        <div className="form-section">
+          <div className="section-title">Nội dung đánh giá</div>
+
+          <div className="form-group">
+            <label>Tiêu đề đánh giá *</label>
             <input
               type="text"
-              name="custom_job_title"
-              value={formData.custom_job_title}
+              name="title"
+              value={formData.title}
               onChange={handleChange}
-              placeholder="Nhập chức danh của bạn..."
+              required
+              minLength={5}
+              maxLength={100}
+              placeholder="VD: Môi trường làm việc tốt, nhiều cơ hội phát triển"
               className="form-input"
-              style={{ marginTop: '8px' }}
             />
-          )}
-        </div>
-        <div className="form-group">
-          <label>Nội dung đánh giá</label>
-          <textarea
-            name="reviews_content"
-            value={formData.reviews_content}
-            onChange={handleChange}
-            rows={5}
-            placeholder="Chia sẻ trải nghiệm của bạn..."
-          />
-        </div>
-        <div className="form-group">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              name="is_anonymous"
-              checked={formData.is_anonymous}
+            <span className="char-count">{formData.title.length}/100</span>
+          </div>
+
+          <div className="form-group">
+            <label>Trải nghiệm tổng quan *</label>
+            <textarea
+              name="reviews_content"
+              value={formData.reviews_content}
               onChange={handleChange}
+              rows={4}
+              placeholder="Chia sẻ trải nghiệm chung của bạn khi làm việc tại công ty..."
+              className="form-textarea"
             />
-            <span>Đánh giá ẩn danh</span>
-          </label>
-          <p className="form-hint">Nếu chọn, tên của bạn sẽ không được hiển thị công khai</p>
+            <span className="char-count">{formData.reviews_content.length} ký tự (tối thiểu 20)</span>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>👍 Ưu điểm</label>
+              <textarea
+                name="pros"
+                value={formData.pros}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Những điểm tích cực..."
+                className="form-textarea"
+              />
+            </div>
+            <div className="form-group">
+              <label>👎 Nhược điểm</label>
+              <textarea
+                name="cons"
+                value={formData.cons}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Những điểm cần cải thiện..."
+                className="form-textarea"
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>💡 Lời khuyên cho ban lãnh đạo</label>
+            <textarea
+              name="advice"
+              value={formData.advice}
+              onChange={handleChange}
+              rows={2}
+              placeholder="Bạn có đề xuất gì cho công ty? (tùy chọn)"
+              className="form-textarea"
+            />
+          </div>
         </div>
+
+        {/* Privacy Section */}
+        <div className="form-section">
+          <div className="section-title">Tùy chọn hiển thị</div>
+          <div className="form-group">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="is_anonymous"
+                checked={formData.is_anonymous}
+                onChange={handleChange}
+              />
+              <span>Đánh giá ẩn danh</span>
+            </label>
+            <p className="form-hint">
+              Nếu chọn, tên của bạn sẽ không được hiển thị công khai. Chỉ hiển thị "Người dùng ẩn danh".
+            </p>
+          </div>
+        </div>
+
+        {/* Actions */}
         <div className="form-actions">
           <button type="button" onClick={onCancel} className="btn-secondary">
             Hủy
@@ -158,4 +272,3 @@ const CreateReviewForm = ({ companyId, onSuccess, onCancel }) => {
 };
 
 export default CreateReviewForm;
-

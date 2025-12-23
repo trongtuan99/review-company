@@ -1,39 +1,163 @@
 .create-review-form {
   background: var(--glassdoor-white);
-  padding: 24px;
+  padding: 28px;
   border-radius: 12px;
   margin-bottom: 24px;
   border: 1px solid var(--glassdoor-border);
   box-shadow: 0 2px 8px var(--glassdoor-shadow);
 }
 
+/* Form Header */
+.create-review-form .form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--glassdoor-green);
+}
+
 .create-review-form h3 {
-  margin-bottom: 20px;
+  margin: 0;
   color: var(--glassdoor-gray);
   font-size: 22px;
   font-weight: 700;
 }
 
-.create-review-form .form-select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--glassdoor-border);
+.create-review-form .guidelines-link {
+  color: var(--glassdoor-blue);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
   border-radius: 6px;
+  background: var(--glassdoor-blue-light);
+  transition: background 0.2s;
+}
+
+.create-review-form .guidelines-link:hover {
+  background: rgba(11, 95, 170, 0.15);
+}
+
+/* Error Message */
+.create-review-form .error-message {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #dc2626;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Form Sections */
+.create-review-form .form-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--glassdoor-border);
+}
+
+.create-review-form .form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.create-review-form .section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--glassdoor-gray);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Form Group */
+.create-review-form .form-group {
+  margin-bottom: 16px;
+}
+
+.create-review-form .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.create-review-form .form-group label {
+  display: block;
+  color: var(--glassdoor-gray);
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* Form Inputs */
+.create-review-form .form-input,
+.create-review-form .form-select,
+.create-review-form .form-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--glassdoor-border);
+  border-radius: 8px;
   font-size: 14px;
   background: var(--glassdoor-white);
   color: var(--glassdoor-gray);
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.create-review-form .form-select:focus {
+.create-review-form .form-input:focus,
+.create-review-form .form-select:focus,
+.create-review-form .form-textarea:focus {
   outline: none;
   border-color: var(--glassdoor-green);
+  box-shadow: 0 0 0 3px rgba(0, 168, 107, 0.1);
 }
 
-.create-review-form .checkbox-label {
+.create-review-form .form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.create-review-form .mt-2 {
+  margin-top: 8px;
+}
+
+/* Form Row */
+.create-review-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Rating Container */
+.create-review-form .rating-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.create-review-form .rating-label {
+  color: var(--glassdoor-gray-light);
+  font-size: 14px;
+  padding: 6px 12px;
+  background: var(--glassdoor-gray-bg);
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* Character Count */
+.create-review-form .char-count {
+  display: block;
+  text-align: right;
+  font-size: 12px;
+  color: var(--glassdoor-gray-light);
+  margin-top: 6px;
+}
+
+/* Checkbox */
+.create-review-form .checkbox-label {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
   cursor: pointer;
   font-weight: 500;
   color: var(--glassdoor-gray);
@@ -47,20 +171,90 @@
 }
 
 .create-review-form .form-hint {
-  margin: 8px 0 0 0;
-  font-size: 12px;
+  margin: 8px 0 0 28px;
+  font-size: 13px;
   color: var(--glassdoor-gray-light);
-  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Form Actions */
+.create-review-form .form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--glassdoor-border);
+}
+
+.create-review-form .btn-primary {
+  padding: 12px 24px;
+  background: var(--glassdoor-green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.create-review-form .btn-primary:hover {
+  background: var(--glassdoor-green-dark);
+}
+
+.create-review-form .btn-primary:disabled {
+  background: var(--glassdoor-gray-light);
+  cursor: not-allowed;
+}
+
+.create-review-form .btn-secondary {
+  padding: 12px 24px;
+  background: var(--glassdoor-white);
+  color: var(--glassdoor-gray);
+  border: 1px solid var(--glassdoor-border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.create-review-form .btn-secondary:hover {
+  background: var(--glassdoor-gray-bg);
 }
 
 /* Responsive - Mobile */
 @media (max-width: 768px) {
   .create-review-form {
-    padding: 15px;
+    padding: 20px;
+  }
+
+  .create-review-form .form-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
   }
 
   .create-review-form h3 {
     font-size: 18px;
   }
-}
 
+  .create-review-form .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .create-review-form .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .create-review-form .btn-primary,
+  .create-review-form .btn-secondary {
+    width: 100%;
+  }
+
+  .create-review-form .rating-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

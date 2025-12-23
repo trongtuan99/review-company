@@ -11,6 +11,12 @@ import AllCompanies from './pages/AllCompanies';
 import About from './pages/About';
 import FAQ from './pages/FAQ';
 import Profile from './pages/Profile';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import Guidelines from './pages/Guidelines';
+import Contact from './pages/Contact';
+import Sitemap from './pages/Sitemap';
+import WriteReview from './pages/WriteReview';
 import { API_BASE_URL } from './config/api';
 import './App.css';
 
@@ -42,6 +48,12 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/guidelines" element={<Guidelines />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/sitemap" element={<Sitemap />} />
+              <Route path="/write-review" element={<WriteReview />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </MainLayout>

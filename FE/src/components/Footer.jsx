@@ -1,8 +1,19 @@
-import { memo } from 'react';
-import { Link } from 'react-router-dom';
+import { memo, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = memo(() => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    if (email && email.includes('@')) {
+      // Navigate to register page with email pre-filled
+      navigate(`/register?email=${encodeURIComponent(email)}`);
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -120,14 +131,18 @@ const Footer = memo(() => {
               </a>
             </div>
             <div className="footer-newsletter">
-              <p className="newsletter-title">Đăng ký nhận tin</p>
-              <form className="newsletter-form">
-                <input 
-                  type="email" 
-                  placeholder="Email của bạn" 
+              <p className="newsletter-title">Đăng ký tài khoản</p>
+              <p className="newsletter-desc">Nhập email để bắt đầu</p>
+              <form className="newsletter-form" onSubmit={handleNewsletterSubmit}>
+                <input
+                  type="email"
+                  placeholder="Email của bạn"
                   className="newsletter-input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
-                <button type="submit" className="newsletter-btn">Đăng ký</button>
+                <button type="submit" className="newsletter-btn">Tiếp tục</button>
               </form>
             </div>
           </div>

@@ -1,11 +1,15 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './Register.css';
 
 const Register = () => {
+  const [searchParams] = useSearchParams();
+  const prefilledEmail = searchParams.get('email') || '';
+  const isFromNewsletter = !!prefilledEmail;
+
   const [formData, setFormData] = useState({
-    email: '',
+    email: prefilledEmail,
     password: '',
     password_confirmation: '',
     first_name: '',
@@ -16,6 +20,12 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (prefilledEmail) {
+      setFormData(prev => ({ ...prev, email: prefilledEmail }));
+    }
+  }, [prefilledEmail]);
 
   const handleChange = (e) => {
     setFormData({
@@ -48,7 +58,19 @@ const Register = () => {
   return (
     <div className="register-container">
       <div className="register-card">
-        <h2>Đăng ký</h2>
+        {isFromNewsletter ? (
+          <div className="register-header">
+            <div className="step-indicator">
+              <span className="step completed">1</span>
+              <span className="step-line"></span>
+              <span className="step active">2</span>
+            </div>
+            <h2>Hoàn tất đăng ký</h2>
+            <p className="register-subtitle">Tạo mật khẩu để hoàn tất đăng ký tài khoản</p>
+          </div>
+        ) : (
+          <h2>Đăng ký</h2>
+        )}
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-row">
@@ -75,8 +97,8 @@ const Register = () => {
               />
             </div>
           </div>
-          <div className="form-group">
-            <label>Email</label>
+          <div className={`form-group ${isFromNewsletter ? 'email-prefilled' : ''}`}>
+            <label>Email {isFromNewsletter && <span className="verified-badge">✓ Đã nhập</span>}</label>
             <input
               type="email"
               name="email"
@@ -84,6 +106,8 @@ const Register = () => {
               onChange={handleChange}
               required
               placeholder="your@email.com"
+              readOnly={isFromNewsletter}
+              className={isFromNewsletter ? 'readonly' : ''}
             />
           </div>
           <div className="form-group">

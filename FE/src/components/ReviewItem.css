@@ -106,6 +106,75 @@
   font-size: 16px;
 }
 
+/* Formatted Review Content */
+.review-content-formatted {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-content-formatted .main-content {
+  margin: 0;
+  padding-bottom: 12px;
+}
+
+.review-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid var(--glassdoor-border);
+  padding-top: 16px;
+}
+
+.review-section {
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--glassdoor-white);
+  border: 1px solid var(--glassdoor-border);
+}
+
+.review-section.pros {
+  border-left: 4px solid var(--glassdoor-green);
+  background: linear-gradient(to right, rgba(0, 168, 107, 0.05), transparent);
+}
+
+.review-section.cons {
+  border-left: 4px solid #ef4444;
+  background: linear-gradient(to right, rgba(239, 68, 68, 0.05), transparent);
+}
+
+.review-section.advice {
+  border-left: 4px solid #3b82f6;
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.05), transparent);
+}
+
+.review-section .section-label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--glassdoor-gray);
+}
+
+.review-section.pros .section-label {
+  color: var(--glassdoor-green-dark);
+}
+
+.review-section.cons .section-label {
+  color: #dc2626;
+}
+
+.review-section.advice .section-label {
+  color: #2563eb;
+}
+
+.review-section p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--glassdoor-gray);
+}
+
 .review-actions {
   display: flex;
   gap: 12px;
@@ -201,6 +270,18 @@
 
   .replies-section {
     padding: 16px;
+  }
+
+  .review-section {
+    padding: 12px 14px;
+  }
+
+  .review-section .section-label {
+    font-size: 13px;
+  }
+
+  .review-section p {
+    font-size: 14px;
   }
 }
 

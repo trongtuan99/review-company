@@ -5,17 +5,20 @@ class Reply < ApplicationRecord
   belongs_to :review
   belongs_to :user
 
-  after_commit :update_total_reply_count, on: [:create, :destroy]
+  after_commit :increment_total_reply, on: :create
+  after_commit :decrement_total_reply, on: :destroy
   after_commit :update_is_edited, on: :update, if: -> { saved_change_to_content?}
 
   private
 
-  def update_total_reply_count
-    if previous_changes.keys.include?("id") && previous_changes[:id].first.nil?
-      review.increment!(:total_reply, 1)
-    else
-      review.decrement!(:total_reply, 1)
-    end
+  def increment_total_reply
+    return unless review
+    review.increment!(:total_reply, 1)
+  end
+
+  def decrement_total_reply
+    return unless review
+    review.decrement!(:total_reply, 1) if review.total_reply > 0
   end
 
   def update_is_edited

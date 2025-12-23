@@ -11,12 +11,12 @@ class Api::V1::ReplyController < ApplicationController
 
   def create
     reply = Reply.create!(reply_review_params.merge!(user_id: current_user.id, review_id: @review.id))
-    render json: json_with_success(message: I18n.t("controller.base.sucess"), data: reply, default_serializer: ReplySerializer)
+    render json: json_with_success(message: I18n.t("controller.base.success"), data: reply, default_serializer: ReplySerializer)
   end
 
   def update
     @reply.update!(reply_review_params)
-    render json_with_success(message: I18n.t("controller.base.sucess"), data: @reply, default_serializer: ReplySerializer)
+    render json: json_with_success(message: I18n.t("controller.base.success"), data: @reply, default_serializer: ReplySerializer)
   end
 
   def destroy

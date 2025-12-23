@@ -26,6 +26,86 @@
   letter-spacing: -0.5px;
 }
 
+/* Register Header for Newsletter Flow */
+.register-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.register-header h2 {
+  margin-bottom: 8px;
+}
+
+.register-subtitle {
+  color: var(--glassdoor-gray-light);
+  font-size: 15px;
+  margin: 0;
+}
+
+/* Step Indicator */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.step {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  background: var(--glassdoor-gray-bg);
+  color: var(--glassdoor-gray-light);
+  border: 2px solid var(--glassdoor-border);
+}
+
+.step.completed {
+  background: var(--glassdoor-green);
+  color: white;
+  border-color: var(--glassdoor-green);
+}
+
+.step.active {
+  background: white;
+  color: var(--glassdoor-green);
+  border-color: var(--glassdoor-green);
+}
+
+.step-line {
+  width: 40px;
+  height: 2px;
+  background: var(--glassdoor-green);
+}
+
+/* Email Prefilled State */
+.email-prefilled label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.verified-badge {
+  font-size: 12px;
+  color: var(--glassdoor-green);
+  font-weight: 500;
+  background: rgba(0, 168, 107, 0.1);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.form-group input.readonly {
+  background: var(--glassdoor-gray-bg);
+  color: var(--glassdoor-gray);
+  cursor: not-allowed;
+  border-color: var(--glassdoor-green);
+}
+
 .login-link {
   text-align: center;
   margin-top: 24px;

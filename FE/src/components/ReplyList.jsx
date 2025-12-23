@@ -1,39 +1,33 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { replyService } from '../services/replyService';
 import ReplyItem from './ReplyItem';
 import './ReplyList.css';
 
-const ReplyList = ({ reviewId, refreshKey, onMounted }) => {
+const ReplyList = ({ reviewId, refreshKey }) => {
   const [replies, setReplies] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadReplies();
-  }, [reviewId, refreshKey]);
-
-  useEffect(() => {
-    if (onMounted) {
-      onMounted(loadReplies);
-    }
-  }, [onMounted]);
-
-  const loadReplies = async () => {
+  const loadReplies = useCallback(async () => {
     try {
       setLoading(true);
       const response = await replyService.getReplies(reviewId);
-      
+
       if (response && (response.status === 'ok' || response.status === 'success')) {
         const repliesData = response.data || [];
         setReplies(repliesData);
       } else {
         setReplies([]);
       }
-    } catch (error) {
+    } catch {
       setReplies([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [reviewId]);
+
+  useEffect(() => {
+    loadReplies();
+  }, [loadReplies, refreshKey]);
 
   return (
     <div className="reply-list-container">

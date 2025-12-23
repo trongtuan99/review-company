@@ -13,7 +13,10 @@ class User < ApplicationRecord
   private
 
   def set_default_role
-    self.role_id = Role.find_by(role: 'user').id
+    user_role = Role.find_by(role: 'user')
+    return unless user_role
+
+    self.role_id = user_role.id
     self.save!
   end
 end

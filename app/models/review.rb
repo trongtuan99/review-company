@@ -10,21 +10,35 @@ class Review < ApplicationRecord
   has_many :likes, dependent: :destroy
 
   before_create :set_default_values
-  after_commit :update_company_total_review, on: :create
+  after_commit :increment_company_total_review, on: :create
+  after_commit :decrement_company_total_review, on: :destroy
   after_commit :update_company_avg_score, on: [:create, :update, :destroy]
 
   private
 
-  def update_company_total_review
+  def increment_company_total_review
+    return unless company
     Company.transaction do
       company.increment!(:total_reviews, 1)
     end
   end
 
+  def decrement_company_total_review
+    return unless company
+    Company.transaction do
+      company.decrement!(:total_reviews, 1) if company.total_reviews > 0
+    end
+  end
+
   def update_company_avg_score
+    return unless company
+
     Company.transaction do
       reviews_count = company.reviews.count
-      return if reviews_count.zero?
+      if reviews_count.zero?
+        company.update_column(:avg_score, nil)
+        return
+      end
 
       total_score = company.reviews.sum(:score)
       new_avg_score = total_score.to_f / reviews_count

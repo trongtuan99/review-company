@@ -1,33 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { useReviewMutations } from '../hooks/useReviewMutations';
 import ReplyList from './ReplyList';
 import CreateReplyForm from './CreateReplyForm';
 import './ReviewItem.css';
 
 const ReviewItem = ({ review, isAuthenticated, onUpdate, companyId }) => {
-  const [currentReview, setCurrentReview] = useState(review);
+  // Local override state - only used during mutation, null otherwise
+  // Key prop from parent (review.id) should reset this component when review changes
+  const [likeOverride, setLikeOverride] = useState(null);
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyRefreshKey, setReplyRefreshKey] = useState(0);
-  const [reloadReplies, setReloadReplies] = useState(null);
 
-  useEffect(() => {
-    setCurrentReview(review);
-  }, [review]);
+  // Use override state if set, otherwise use props directly
+  // Check if likeOverride exists (not null), then use all its values
+  const currentReview = likeOverride ? {
+    ...review,
+    total_like: likeOverride.total_like,
+    total_dislike: likeOverride.total_dislike,
+    user_like_status: likeOverride.user_like_status,
+  } : review;
 
-  const handleMutationSuccess = (reviewId, reviewData) => {
+  const handleMutationSuccess = useCallback((reviewId, reviewData) => {
     if (reviewData && reviewData.id === reviewId) {
-      // Ensure we have all the necessary fields from server response
-      setCurrentReview(prev => ({
-        ...prev,
-        ...reviewData,
-        total_like: reviewData.total_like ?? prev.total_like,
-        total_dislike: reviewData.total_dislike ?? prev.total_dislike,
-        user_like_status: reviewData.user_like_status ?? prev.user_like_status,
-      }));
+      // Update override with server response, then clear after delay
+      setLikeOverride({
+        total_like: reviewData.total_like,
+        total_dislike: reviewData.total_dislike,
+        user_like_status: reviewData.user_like_status,
+      });
+      // Clear override after parent has time to update props
+      setTimeout(() => {
+        setLikeOverride(null);
+      }, 500);
     }
     onUpdate?.();
-  };
+  }, [onUpdate]);
 
   const { likeReview, dislikeReview, isLiking, isDisliking } = useReviewMutations(
     review.id,
@@ -41,86 +49,136 @@ const ReviewItem = ({ review, isAuthenticated, onUpdate, companyId }) => {
 
   const handleLike = () => {
     if (loading) return;
-    
-    // Optimistic update
+
+    // Get current values (from override or props)
     const previousStatus = currentReview.user_like_status;
     const previousLike = currentReview.total_like || 0;
     const previousDislike = currentReview.total_dislike || 0;
-    
-    let newStatus = 'like';
-    let newLike = previousLike;
-    let newDislike = previousDislike;
-    
+
+    // Optimistic update
     if (previousStatus === 'like') {
       // Toggle off
-      newStatus = null;
-      newLike = Math.max(0, previousLike - 1);
+      setLikeOverride({
+        user_like_status: null,
+        total_like: Math.max(0, previousLike - 1),
+        total_dislike: previousDislike,
+      });
     } else {
       // Toggle on
-      newStatus = 'like';
-      if (previousStatus === 'dislike') {
-        newDislike = Math.max(0, previousDislike - 1);
-        newLike = previousLike + 1;
-      } else {
-        newLike = previousLike + 1;
-      }
+      setLikeOverride({
+        user_like_status: 'like',
+        total_like: previousLike + 1,
+        total_dislike: previousStatus === 'dislike' ? Math.max(0, previousDislike - 1) : previousDislike,
+      });
     }
-    
-    setCurrentReview({
-      ...currentReview,
-      user_like_status: newStatus,
-      total_like: newLike,
-      total_dislike: newDislike,
-    });
-    
+
     likeReview();
   };
 
   const handleDislike = () => {
     if (loading) return;
-    
-    // Optimistic update
+
+    // Get current values (from override or props)
     const previousStatus = currentReview.user_like_status;
     const previousLike = currentReview.total_like || 0;
     const previousDislike = currentReview.total_dislike || 0;
-    
-    let newStatus = 'dislike';
-    let newLike = previousLike;
-    let newDislike = previousDislike;
-    
+
+    // Optimistic update
     if (previousStatus === 'dislike') {
       // Toggle off
-      newStatus = null;
-      newDislike = Math.max(0, previousDislike - 1);
+      setLikeOverride({
+        user_like_status: null,
+        total_like: previousLike,
+        total_dislike: Math.max(0, previousDislike - 1),
+      });
     } else {
       // Toggle on
-      newStatus = 'dislike';
-      if (previousStatus === 'like') {
-        newLike = Math.max(0, previousLike - 1);
-        newDislike = previousDislike + 1;
-      } else {
-        newDislike = previousDislike + 1;
-      }
+      setLikeOverride({
+        user_like_status: 'dislike',
+        total_like: previousStatus === 'like' ? Math.max(0, previousLike - 1) : previousLike,
+        total_dislike: previousDislike + 1,
+      });
     }
-    
-    setCurrentReview({
-      ...currentReview,
-      user_like_status: newStatus,
-      total_like: newLike,
-      total_dislike: newDislike,
-    });
-    
+
     dislikeReview();
   };
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('vi-VN', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString('vi-VN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     });
+  };
+
+  const formatReviewContent = (content) => {
+    if (!content) return null;
+
+    // Parse content with special delimiters [PROS], [CONS], [ADVICE]
+    // Also handle old markdown format **Ưu điểm:**, **Nhược điểm:**, **Lời khuyên cho ban lãnh đạo:**
+    let mainContent = content;
+    let pros = '';
+    let cons = '';
+    let advice = '';
+
+    // Check for new format with delimiters
+    if (content.includes('[PROS]') || content.includes('[CONS]') || content.includes('[ADVICE]')) {
+      const prosMatch = content.match(/\[PROS\]\n?([\s\S]*?)(?=\[CONS\]|\[ADVICE\]|$)/);
+      const consMatch = content.match(/\[CONS\]\n?([\s\S]*?)(?=\[PROS\]|\[ADVICE\]|$)/);
+      const adviceMatch = content.match(/\[ADVICE\]\n?([\s\S]*?)(?=\[PROS\]|\[CONS\]|$)/);
+
+      if (prosMatch) pros = prosMatch[1].trim();
+      if (consMatch) cons = consMatch[1].trim();
+      if (adviceMatch) advice = adviceMatch[1].trim();
+
+      // Get main content (before any delimiter)
+      mainContent = content.split(/\[PROS\]|\[CONS\]|\[ADVICE\]/)[0].trim();
+    }
+    // Check for old markdown format
+    else if (content.includes('**Ưu điểm:**') || content.includes('**Nhược điểm:**') || content.includes('**Lời khuyên')) {
+      const prosMatch = content.match(/\*\*Ưu điểm:\*\*\n?([\s\S]*?)(?=\*\*Nhược điểm:\*\*|\*\*Lời khuyên.*?\*\*|$)/);
+      const consMatch = content.match(/\*\*Nhược điểm:\*\*\n?([\s\S]*?)(?=\*\*Ưu điểm:\*\*|\*\*Lời khuyên.*?\*\*|$)/);
+      const adviceMatch = content.match(/\*\*Lời khuyên.*?\*\*\n?([\s\S]*?)(?=\*\*Ưu điểm:\*\*|\*\*Nhược điểm:\*\*|$)/);
+
+      if (prosMatch) pros = prosMatch[1].trim();
+      if (consMatch) cons = consMatch[1].trim();
+      if (adviceMatch) advice = adviceMatch[1].trim();
+
+      // Get main content (before any section marker)
+      mainContent = content.split(/\*\*Ưu điểm:\*\*|\*\*Nhược điểm:\*\*|\*\*Lời khuyên/)[0].trim();
+    }
+
+    const hasSections = pros || cons || advice;
+
+    return (
+      <div className="review-content-formatted">
+        {mainContent && <p className="main-content">{mainContent}</p>}
+        {hasSections && (
+          <div className="review-sections">
+            {pros && (
+              <div className="review-section pros">
+                <span className="section-label">👍 Ưu điểm</span>
+                <p>{pros}</p>
+              </div>
+            )}
+            {cons && (
+              <div className="review-section cons">
+                <span className="section-label">👎 Nhược điểm</span>
+                <p>{cons}</p>
+              </div>
+            )}
+            {advice && (
+              <div className="review-section advice">
+                <span className="section-label">💡 Lời khuyên</span>
+                <p>{advice}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -146,7 +204,10 @@ const ReviewItem = ({ review, isAuthenticated, onUpdate, companyId }) => {
       </div>
 
       <div className="review-content">
-        <p>{currentReview.reviews_content || 'Không có nội dung đánh giá.'}</p>
+        {currentReview.reviews_content
+          ? formatReviewContent(currentReview.reviews_content)
+          : <p>Không có nội dung đánh giá.</p>
+        }
       </div>
 
       <div className="review-actions">
@@ -187,16 +248,11 @@ const ReviewItem = ({ review, isAuthenticated, onUpdate, companyId }) => {
       {showReplyForm && isAuthenticated && (
         <CreateReplyForm
           reviewId={currentReview.id}
-          onSuccess={async () => {
+          onSuccess={() => {
             setShowReplyForm(false);
             setShowReplies(true);
-            setTimeout(() => {
-              if (reloadReplies) {
-                reloadReplies();
-              } else {
-                setReplyRefreshKey(prev => prev + 1);
-              }
-            }, 300);
+            // Force refresh by incrementing key - ensures ReplyList remounts and fetches fresh data
+            setReplyRefreshKey(prev => prev + 1);
             onUpdate?.();
           }}
           onCancel={() => setShowReplyForm(false)}
@@ -205,11 +261,10 @@ const ReviewItem = ({ review, isAuthenticated, onUpdate, companyId }) => {
 
       {showReplies && (
         <div className="replies-section">
-          <ReplyList 
+          <ReplyList
             key={`replies-${currentReview.id}-${replyRefreshKey}`}
-            reviewId={currentReview.id} 
+            reviewId={currentReview.id}
             refreshKey={replyRefreshKey}
-            onMounted={setReloadReplies}
           />
         </div>
       )}
