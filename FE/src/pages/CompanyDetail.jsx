@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 import { useCompany, useReviews, useFavoriteStatus, useFavoriteMutations } from '../hooks';
 import ReviewList from '../components/ReviewList';
@@ -117,7 +118,7 @@ const CompanyDetail = () => {
 
   const handleToggleFavorite = async () => {
     if (!isAuthenticated) {
-      alert(t('auth.pleaseLoginToFavorite'));
+      toast.info(t('auth.pleaseLoginToFavorite'));
       return;
     }
 
@@ -128,8 +129,13 @@ const CompanyDetail = () => {
         await addFavoriteAsync(id);
       }
       refetchFavoriteStatus();
+      if (!isFavorited) {
+        toast.success(t('company.addedToFavorite') || 'Added to favorites');
+      } else {
+        toast.info(t('company.removedFromFavorite') || 'Removed from favorites');
+      }
     } catch (err) {
-      alert(err.message || t('company.cannotUpdateFavorite'));
+      toast.error(err.message || t('company.cannotUpdateFavorite'));
     }
   };
 

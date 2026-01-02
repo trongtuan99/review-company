@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { adminService } from '../../services/adminService';
 import ConfirmModal from '../../components/ConfirmModal';
+import { toast } from 'react-toastify';
 import './Admin.css';
 
 const AdminCompanies = () => {
@@ -136,7 +137,7 @@ const AdminCompanies = () => {
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.owner) {
-      alert(i18n.language === 'vi' ? 'Tên công ty và chủ sở hữu là bắt buộc' : 'Company name and owner are required');
+      toast.error(i18n.language === 'vi' ? 'Tên công ty và chủ sở hữu là bắt buộc' : 'Company name and owner are required');
       return;
     }
 
@@ -154,15 +155,17 @@ const AdminCompanies = () => {
 
       if (formMode === 'create') {
         await adminService.createCompany(submitData);
+        toast.success(i18n.language === 'vi' ? 'Tạo công ty thành công' : 'Company created successfully');
       } else {
         await adminService.updateCompany(selectedCompany.id, submitData);
+        toast.success(i18n.language === 'vi' ? 'Cập nhật công ty thành công' : 'Company updated successfully');
       }
       setShowFormModal(false);
       setSelectedCompany(null);
       await loadCompanies();
     } catch (error) {
       console.error('Error saving company:', error);
-      alert(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
     } finally {
       setFormLoading(false);
     }
@@ -180,8 +183,10 @@ const AdminCompanies = () => {
     try {
       if (modalAction === 'delete') {
         await adminService.deleteCompany(selectedCompany.id);
+        toast.success(i18n.language === 'vi' ? 'Xóa công ty thành công' : 'Company deleted successfully');
       } else if (modalAction === 'restore') {
         await adminService.restoreCompany(selectedCompany.id);
+        toast.success(i18n.language === 'vi' ? 'Khôi phục công ty thành công' : 'Company restored successfully');
       }
       await loadCompanies();
       setShowModal(false);
@@ -189,7 +194,7 @@ const AdminCompanies = () => {
       setModalAction(null);
     } catch (error) {
       console.error('Error performing action:', error);
-      alert(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
     }
   };
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { contactService } from '../services/contactService';
 import './Contact.css';
 
@@ -27,9 +28,11 @@ const Contact = () => {
 
     try {
       await contactService.sendMessage(formData);
+      toast.success(t('pages.contact.messageSent') || 'Message sent successfully!');
       setSubmitted(true);
     } catch (err) {
       setError(err.message || t('pages.contact.errorMessage'));
+      toast.error(err.message || t('pages.contact.errorMessage'));
     } finally {
       setLoading(false);
     }

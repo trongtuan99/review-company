@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { adminService } from '../../services/adminService';
 import ConfirmModal from '../../components/ConfirmModal';
+import { toast } from 'react-toastify';
 import './Admin.css';
 
 const RESOURCES = ['users', 'companies', 'reviews', 'roles', 'dashboard', 'settings'];
@@ -109,14 +110,14 @@ const AdminRoles = () => {
       await loadRoles();
     } catch (error) {
       console.error('Error updating status:', error);
-      alert(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
     }
   };
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     if (!formData.name) {
-      alert(t('admin.roleRequired'));
+      toast.warn(t('admin.roleRequired'));
       return;
     }
 
@@ -124,15 +125,17 @@ const AdminRoles = () => {
       setFormLoading(true);
       if (formMode === 'create') {
         await adminService.createRole(formData);
+        toast.success(t('admin.roleCreated') || 'Role created successfully');
       } else {
         await adminService.updateRole(selectedRole.id, formData);
+        toast.success(t('admin.roleUpdated') || 'Role updated successfully');
       }
       setShowFormModal(false);
       setSelectedRole(null);
       await loadRoles();
     } catch (error) {
       console.error('Error saving role:', error);
-      alert(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
     } finally {
       setFormLoading(false);
     }
@@ -144,12 +147,13 @@ const AdminRoles = () => {
     try {
       setPermissionsLoading(true);
       await adminService.updateRolePermissions(permissionsRole.id, permissionsData);
+      toast.success(t('admin.permissionsUpdated') || 'Permissions updated successfully');
       setShowPermissionsModal(false);
       setPermissionsRole(null);
       await loadRoles();
     } catch (error) {
       console.error('Error saving permissions:', error);
-      alert(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
     } finally {
       setPermissionsLoading(false);
     }
@@ -196,9 +200,10 @@ const AdminRoles = () => {
       setSelectedRole(null);
       setModalAction(null);
       await loadRoles();
+      toast.success(t('admin.roleDeleted') || 'Role deleted successfully');
     } catch (error) {
       console.error('Error deleting role:', error);
-      alert(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
     }
   };
 

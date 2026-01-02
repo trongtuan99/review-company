@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
@@ -138,17 +139,17 @@ const WriteReview = () => {
     setError('');
 
     if (!selectedCompanyId) {
-      setError(t('validation.selectCompany'));
+      toast.error(t('validation.selectCompany'));
       return;
     }
 
     if (!formData.title || formData.title.length < 5) {
-      setError(t('validation.titleMinLength'));
+      toast.error(t('validation.titleMinLength'));
       return;
     }
 
     if (!formData.reviews_content || formData.reviews_content.length < 20) {
-      setError(t('validation.contentMinLength'));
+      toast.error(t('validation.contentMinLength'));
       return;
     }
 
@@ -183,8 +184,11 @@ const WriteReview = () => {
       };
 
       await createReview({ companyId: selectedCompanyId, reviewData: submitData });
+      toast.success(t('review.reviewSubmitted'));
       setSubmitted(true);
     } catch (err) {
+      console.error(err);
+      toast.error(err.message || err.error || t('validation.createReviewError'));
       setError(err.message || err.error || t('validation.createReviewError'));
     }
   };

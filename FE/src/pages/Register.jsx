@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 import './Register.css';
 
@@ -42,6 +43,7 @@ const Register = () => {
 
     if (formData.password !== formData.password_confirmation) {
       setError(t('auth.passwordMismatch'));
+      toast.error(t('auth.passwordMismatch'));
       return;
     }
 
@@ -49,9 +51,11 @@ const Register = () => {
     const result = await register(formData);
 
     if (result.success) {
+      toast.success(t('auth.registerSuccess') || 'Registration successful!');
       navigate('/');
     } else {
       setError(result.error || t('auth.registerFailed'));
+      toast.error(result.error || t('auth.registerFailed'));
     }
 
     setLoading(false);

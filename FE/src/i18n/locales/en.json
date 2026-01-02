@@ -33,7 +33,8 @@
     "characters": "characters",
     "minimum": "minimum",
     "sending": "Sending...",
-    "thankYou": "Thank you!"
+    "thankYou": "Thank you!",
+    "removed": "Removed successfully"
   },
   "nav": {
     "brand": "Review Company",
@@ -58,6 +59,8 @@
     "lastName": "Last Name",
     "phone": "Phone Number",
     "loginButton": "Login",
+    "loginSuccess": "Login successful!",
+    "registerSuccess": "Registration successful!",
     "registerButton": "Register",
     "loggingIn": "Logging in...",
     "registering": "Registering...",
@@ -137,7 +140,9 @@
     "oldest": "Oldest",
     "highest": "Highest Score",
     "lowest": "Lowest Score",
-    "cannotUpdateFavorite": "Cannot update favorite"
+    "cannotUpdateFavorite": "Cannot update favorite",
+    "addedToFavorite": "Added to favorites",
+    "removedFromFavorite": "Removed from favorites"
   },
   "review": {
     "writeReview": "Write Review",
@@ -623,6 +628,12 @@
     "saveChanges": "Save Changes",
     "cannotUpdateProfile": "Cannot update profile",
     "titleMinChars": "Title must be at least 5 characters",
-    "contentMinChars": "Review content must be at least 20 characters"
+    "contentMinChars": "Review content must be at least 20 characters",
+    "reviewSubmitted": "Your review has been submitted successfully!",
+    "profileUpdated": "Profile updated successfully",
+    "removed": "Removed successfully",
+    "deleted": "Deleted successfully",
+    "addedToFavorite": "Added to favorites",
+    "removedFromFavorite": "Removed from favorites"
   }
 }

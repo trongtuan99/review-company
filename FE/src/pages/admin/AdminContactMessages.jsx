@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { contactService } from '../../services/contactService';
 import ConfirmModal from '../../components/ConfirmModal';
+import { toast } from 'react-toastify';
 import './Admin.css';
 
 const AdminContactMessages = () => {
@@ -103,6 +104,7 @@ const AdminContactMessages = () => {
         ));
       } catch (error) {
         console.error('Error marking as read:', error);
+        toast.error(t('admin.errorOccurred'));
       }
     }
   };
@@ -119,8 +121,10 @@ const AdminContactMessages = () => {
       setMessages(prev => prev.filter(m => m.id !== selectedMessage.id));
       setShowModal(false);
       setSelectedMessage(null);
+      toast.success(t('common.deleted') || 'Deleted successfully');
     } catch (error) {
       console.error('Error deleting message:', error);
+      toast.error(t('admin.errorOccurred'));
     }
   };
 
@@ -134,8 +138,10 @@ const AdminContactMessages = () => {
       ));
       setReplyContent('');
       setShowDetailModal(false);
+      toast.success(t('admin.contactMessages.replySent') || 'Reply sent successfully');
     } catch (error) {
       console.error('Error sending reply:', error);
+      toast.error(t('admin.errorOccurred'));
     } finally {
       setReplying(false);
     }

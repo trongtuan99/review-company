@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { adminService } from '../../services/adminService';
 import ConfirmModal from '../../components/ConfirmModal';
+import { toast } from 'react-toastify';
 import './Admin.css';
 
 const AdminUsers = () => {
@@ -84,6 +85,7 @@ const AdminUsers = () => {
     try {
       if (modalAction === 'delete') {
         await adminService.deleteUser(selectedUser.id);
+        toast.success(t('admin.userDeleted') || 'User deleted successfully');
       }
       await loadUsers();
       setShowModal(false);
@@ -91,14 +93,14 @@ const AdminUsers = () => {
       setModalAction(null);
     } catch (error) {
       console.error('Error performing action:', error);
-      alert(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
     }
   };
 
   const handleCreateUser = async (e) => {
     e.preventDefault();
     if (!createForm.email || !createForm.password) {
-      alert(t('admin.emailPasswordRequired'));
+      toast.warn(t('admin.emailPasswordRequired'));
       return;
     }
 
@@ -114,13 +116,14 @@ const AdminUsers = () => {
       const response = await adminService.createUser(userData, createForm.role_id);
 
       if (response && response.data) {
+        toast.success(t('admin.userCreated') || 'User created successfully');
         setShowCreateModal(false);
         setCreateForm({ email: '', password: '', first_name: '', last_name: '', role_id: '' });
         await loadUsers();
       }
     } catch (error) {
       console.error('Error creating user:', error);
-      alert(t('admin.createUserError') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.createUserError') + ': ' + (error.message || 'Unknown error'));
     } finally {
       setCreateLoading(false);
     }
@@ -128,19 +131,20 @@ const AdminUsers = () => {
 
   const handleUpdateRole = async () => {
     if (!selectedUser || !selectedRoleId) {
-      alert(t('admin.pleaseSelectRole'));
+      toast.warn(t('admin.pleaseSelectRole'));
       return;
     }
 
     try {
       await adminService.updateUserRole(selectedUser.id, selectedRoleId);
+      toast.success(t('admin.roleUpdated') || 'User role updated successfully');
       setShowRoleModal(false);
       setSelectedUser(null);
       setSelectedRoleId('');
       await loadUsers();
     } catch (error) {
       console.error('Error updating role:', error);
-      alert(t('admin.updateRoleError') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.updateRoleError') + ': ' + (error.message || 'Unknown error'));
     }
   };
 

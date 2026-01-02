@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites, useFavoriteMutations, useUserActivityStats, useUserRecentComments, useUserReviews } from '../hooks';
 import ProtectedRoute from '../components/ProtectedRoute';
@@ -52,9 +53,10 @@ const Profile = () => {
     if (!companyIdToRemove) return;
     try {
       await removeFavoriteAsync(companyIdToRemove);
+      toast.success(t('common.removed') || 'Removed successfully');
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || t('company.cannotUpdateFavorite');
-      alert(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setCompanyIdToRemove(null);
     }

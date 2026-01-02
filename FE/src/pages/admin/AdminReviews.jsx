@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { reviewService } from '../../services/reviewService';
 import { adminService } from '../../services/adminService';
 import ConfirmModal from '../../components/ConfirmModal';
+import { toast } from 'react-toastify';
 import './Admin.css';
 
 const AdminReviews = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -108,6 +109,7 @@ const AdminReviews = () => {
     try {
       if (modalAction === 'delete') {
         await adminService.deleteReview(selectedReview.id);
+        toast.success(i18n.language === 'vi' ? 'Xóa đánh giá thành công' : 'Review deleted successfully');
       }
       await loadReviews();
       setShowModal(false);
@@ -115,19 +117,20 @@ const AdminReviews = () => {
       setModalAction(null);
     } catch (error) {
       console.error('Error performing action:', error);
-      alert(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
     }
   };
 
   const handleUpdateStatus = async (reviewId, status) => {
     try {
       await adminService.updateReviewStatus(reviewId, status);
-      setReviews(prevReviews => 
+      toast.success(i18n.language === 'vi' ? 'Cập nhật trạng thái thành công' : 'Review status updated successfully');
+      setReviews(prevReviews =>
         prevReviews.map(r => r.id === reviewId ? { ...r, status: status } : r)
       );
     } catch (error) {
       console.error('Error updating review status:', error);
-      alert(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
+      toast.error(t('admin.errorOccurred') + ': ' + (error.message || 'Unknown error'));
     }
   };
 

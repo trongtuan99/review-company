@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { userService } from '../services/userService';
 import './EditProfileModal.css';
 
@@ -49,13 +50,16 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
       });
 
       if (response.status === 'ok' || response.status === 'success') {
+        toast.success(t('components.profileUpdated') || 'Profile updated successfully');
         onUpdate && onUpdate(response.data);
         onClose();
       } else {
         setError(response.message || t('components.cannotUpdateProfile'));
+        toast.error(response.message || t('components.cannotUpdateProfile'));
       }
     } catch (err) {
       setError(err.message || t('components.cannotUpdateProfile'));
+      toast.error(err.message || t('components.cannotUpdateProfile'));
     } finally {
       setLoading(false);
     }

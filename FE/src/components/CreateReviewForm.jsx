@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useReviewMutationsExtended } from '../hooks/useReviewMutationsExtended';
 import StarRating from './StarRating';
 import './CreateReviewForm.css';
@@ -75,11 +76,13 @@ const CreateReviewForm = ({ companyId, onSuccess, onCancel }) => {
 
     if (!formData.title || formData.title.length < 5) {
       setError(t('components.titleMinChars'));
+      toast.error(t('components.titleMinChars'));
       return;
     }
 
     if (!formData.reviews_content || formData.reviews_content.length < 20) {
       setError(t('components.contentMinChars'));
+      toast.error(t('components.contentMinChars'));
       return;
     }
 
@@ -108,6 +111,7 @@ const CreateReviewForm = ({ companyId, onSuccess, onCancel }) => {
       };
 
       await createReview({ companyId, reviewData: submitData });
+      toast.success(t('components.reviewSubmitted') || 'Review submitted successfully');
       onSuccess?.();
       setFormData({
         title: '',
@@ -129,6 +133,7 @@ const CreateReviewForm = ({ companyId, onSuccess, onCancel }) => {
       });
     } catch (err) {
       setError(err.message || err.error || t('review.cannotCreateReview'));
+      toast.error(err.message || err.error || t('review.cannotCreateReview'));
     }
   };
 

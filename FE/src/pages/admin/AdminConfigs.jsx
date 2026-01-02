@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { configService } from '../../services/configService';
+import { toast } from 'react-toastify';
 import './Admin.css';
 
 const CATEGORY_ICONS = {
@@ -50,7 +51,7 @@ const AdminConfigs = () => {
       }
     } catch (error) {
       console.error('Error loading configs:', error);
-      setErrorMessage(t('admin.errorOccurred'));
+      toast.error(t('admin.errorOccurred'));
     } finally {
       setLoading(false);
     }
@@ -101,16 +102,15 @@ const AdminConfigs = () => {
       const response = await configService.bulkUpdateConfigs(updates);
 
       if (response.status === 'ok' || response.status === 'success') {
-        setSuccessMessage(i18n.language === 'vi' ? 'Luu thanh cong!' : 'Saved successfully!');
+        toast.success(i18n.language === 'vi' ? 'Luu thanh cong!' : 'Saved successfully!');
         setEditedConfigs({});
         await loadConfigs();
-        setTimeout(() => setSuccessMessage(''), 3000);
       } else {
-        setErrorMessage(response.message || t('admin.errorOccurred'));
+        toast.error(response.message || t('admin.errorOccurred'));
       }
     } catch (error) {
       console.error('Error saving configs:', error);
-      setErrorMessage(error.message || t('admin.errorOccurred'));
+      toast.error(error.message || t('admin.errorOccurred'));
     } finally {
       setSaving(false);
     }
@@ -205,9 +205,6 @@ const AdminConfigs = () => {
             : 'Manage website configurations'}
         </p>
       </div>
-
-      {successMessage && <div className="alert alert-success">{successMessage}</div>}
-      {errorMessage && <div className="alert alert-error">{errorMessage}</div>}
 
       <div className="config-layout">
         {/* Category tabs */}

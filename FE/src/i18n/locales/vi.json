@@ -33,7 +33,8 @@
     "characters": "ký tự",
     "minimum": "tối thiểu",
     "sending": "Đang gửi...",
-    "thankYou": "Cảm ơn bạn!"
+    "thankYou": "Cảm ơn bạn!",
+    "removed": "Đã xóa thành công"
   },
   "nav": {
     "brand": "Review Company",
@@ -58,6 +59,8 @@
     "lastName": "Họ",
     "phone": "Số điện thoại",
     "loginButton": "Đăng nhập",
+    "loginSuccess": "Đăng nhập thành công!",
+    "registerSuccess": "Đăng ký thành công!",
     "registerButton": "Đăng ký",
     "loggingIn": "Đang đăng nhập...",
     "registering": "Đang đăng ký...",
@@ -137,7 +140,9 @@
     "oldest": "Cũ nhất",
     "highest": "Điểm cao nhất",
     "lowest": "Điểm thấp nhất",
-    "cannotUpdateFavorite": "Không thể cập nhật yêu thích"
+    "cannotUpdateFavorite": "Không thể cập nhật yêu thích",
+    "addedToFavorite": "Đã thêm vào yêu thích",
+    "removedFromFavorite": "Đã bỏ yêu thích"
   },
   "review": {
     "writeReview": "Viết đánh giá",
@@ -501,7 +506,13 @@
     "saveChanges": "Lưu thay đổi",
     "cannotUpdateProfile": "Không thể cập nhật thông tin",
     "titleMinChars": "Tiêu đề phải có ít nhất 5 ký tự",
-    "contentMinChars": "Nội dung đánh giá phải có ít nhất 20 ký tự"
+    "contentMinChars": "Nội dung đánh giá phải có ít nhất 20 ký tự",
+    "reviewSubmitted": "Đánh giá của bạn đã được gửi thành công!",
+    "profileUpdated": "Cập nhật hồ sơ thành công",
+    "removed": "Đã xóa thành công",
+    "deleted": "Đã xóa thành công",
+    "addedToFavorite": "Đã thêm vào yêu thích",
+    "removedFromFavorite": "Đã bỏ yêu thích"
   },
   "pages": {
     "backToHome": "Quay lại trang chủ",

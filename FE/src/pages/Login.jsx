@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 import { API_BASE_URL } from '../config/api';
 import './Login.css';
@@ -22,9 +23,11 @@ const Login = () => {
     const result = await login(email, password);
 
     if (result.success) {
+      toast.success(t('auth.loginSuccess') || 'Login successful!');
       navigate('/');
     } else {
       setError(result.error || 'Login failed');
+      toast.error(result.error || 'Login failed');
     }
 
     setLoading(false);
