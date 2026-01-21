@@ -25,6 +25,9 @@ module ReviewCompany
     config.session_store :disabled
     config.api_only = true
     config.autoload_paths += Dir["#{config.root}/config/routes"]
+    # Exclude socket folder from autoload (requires sinatra gem not available in production)
+    config.autoload_paths -= Dir["#{config.root}/app/socket"]
+    Rails.autoloaders.main.ignore("#{config.root}/app/socket")
     config.active_job.queue_adapter = :sidekiq
   end
 end
