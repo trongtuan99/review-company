@@ -4,7 +4,7 @@ Enterprise-grade SaaS platform for collecting and managing company reviews with 
 
 ## 🚀 Live Demo
 
-- **Frontend**: [https://review-companyfe.vercel.app](https://review-companyfe.vercel.app)
+- **Frontend**: [https://reviewcompany.vercel.app](https://reviewcompany.vercel.app)
 
 ## Overview
 
