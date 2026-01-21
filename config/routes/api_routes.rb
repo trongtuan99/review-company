@@ -84,6 +84,14 @@ module ApiRoutes
               put :bulk_update
             end
           end
+
+          # Contact messages endpoints
+          resources :contact, only: %i[index show create update destroy] do
+            member do
+              put :read
+              post :reply
+            end
+          end
         end
      end
    end

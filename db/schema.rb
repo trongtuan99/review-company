@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_28_001538) do
+ActiveRecord::Schema[7.0].define(version: 2026_01_21_154221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -66,6 +66,16 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_28_001538) do
     t.string "tech_stack", limit: 500
     t.jsonb "benefits", default: []
     t.jsonb "social_links", default: {}
+  end
+
+  create_table "contact_messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "subject", null: false
+    t.text "message", null: false
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "favorites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
