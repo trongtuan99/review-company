@@ -2,6 +2,10 @@
 
 Enterprise-grade SaaS platform for collecting and managing company reviews with multi-tenant architecture, real-time updates, and robust background processing.
 
+## 🚀 Live Demo
+
+- **Frontend**: [https://review-companyfe.vercel.app](https://review-companyfe.vercel.app)
+
 ## Overview
 
 ReviewCompany enables organizations and users to evaluate companies through structured reviews with scoring, replies, and interactive features. Built with Rails 7 and React, deployed with Docker and Kafka-based event streaming.
@@ -177,4 +181,4 @@ For issues or questions, create a GitHub issue or contact the development team.
 
 ---
 
-**Last Updated**: December 23, 2025
+**Last Updated**: January 21, 2026
