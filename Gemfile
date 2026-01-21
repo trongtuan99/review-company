@@ -21,9 +21,10 @@ gem 'countries'
 gem 'devise-jwt'
 gem 'ros-apartment', require: 'apartment'
 
-gem "thin"
-gem "sinatra"
-gem "em-websocket"
+# WebSocket gems - development only (conflicts with Puma in production)
+# gem "thin"
+# gem "sinatra"
+# gem "em-websocket"
 
 # streaming kafka
 # gem 'connection_pool'
