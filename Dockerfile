@@ -1,6 +1,7 @@
 FROM ruby:3.1.2
 
-ENV RAILS_ENV=development
+ENV RAILS_ENV=production
+ENV ATTACHED_API=1
 ENV INSTALL_PATH=/var/www/html/review-company
 ENV BUNDLE_PATH=/usr/local/bundle
 
