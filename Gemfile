@@ -6,7 +6,7 @@ ruby "3.1.2"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.8"
 
-gem 'karafka', '~> 2.4', '>= 2.4.13'
+# gem 'karafka', '~> 2.4', '>= 2.4.13'
 
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
@@ -26,9 +26,9 @@ gem "sinatra"
 gem "em-websocket"
 
 # streaming kafka
-gem 'connection_pool'
-gem 'ruby-kafka'
-gem 'rqrcode'
+# gem 'connection_pool'
+# gem 'ruby-kafka'
+# gem 'rqrcode'
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
