@@ -33,8 +33,9 @@ test:
   <<: *default
   database: <%= ENV.fetch("RAILS_DB_NAME") { "compayny-review-test" } %>
 
-#production:
-#  <<: *default
-#  database: ReviewCompany_prod
-#  username: ReviewCompany
-#  password: <%#= ENV["REVIEWCOMPANY_DATABASE_PASSWORD"] %>
+production:
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>
+  database: <%= ENV.fetch("RAILS_DB_NAME") { "ReviewCompany_prod" } %>
+  username: <%= ENV.fetch("RAILS_DB_USER_NAME") { "ReviewCompany" } %>
+  password: <%= ENV.fetch("RAILS_DB_PASSWORD") { ENV["REVIEWCOMPANY_DATABASE_PASSWORD"] } %>

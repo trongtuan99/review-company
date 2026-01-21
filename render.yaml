@@ -1,0 +1,53 @@
+databases:
+  - name: review_company_redis
+    plan: free # or starter
+    ipAllowList: [] # allowed all
+
+services:
+  - type: web
+    name: review-company-api
+    env: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec rails server -b 0.0.0.0"
+    plan: free # or starter
+    envVars:
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: REDIS_URL
+        fromDatabase:
+          name: review_company_redis
+          property: connectionString
+      - key: WEB_CONCURRENCY
+        value: 2
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: JWT_SECRET
+        sync: false
+      - key: APARTMENT_EXCLUDED_MODELS
+        value: "User,Role,Area"
+      - key: APP_NAME
+        value: "REVIEW-COMPANY"
+
+  - type: worker
+    name: review-company-sidekiq
+    env: ruby
+    buildCommand: "bundle install"
+    startCommand: "bundle exec sidekiq"
+    plan: free # or starter
+    envVars:
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: review_company_db
+          property: connectionString
+      - key: REDIS_URL
+        fromDatabase:
+          name: review_company_redis
+          property: connectionString
+      - key: KAFKA_BROKERS
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: APARTMENT_EXCLUDED_MODELS
+        value: "User,Role,Area"
