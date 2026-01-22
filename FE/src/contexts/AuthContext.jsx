@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { authService } from '../services/authService';
 import { userService } from '../services/userService';
 
@@ -13,6 +14,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
+  const { t } = useTranslation();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -42,6 +44,41 @@ export const AuthProvider = ({ children }) => {
     initAuth();
   }, []);
 
+  const formatError = (response) => {
+    if (response.errors) {
+      if (typeof response.errors === 'object' && !Array.isArray(response.errors)) {
+        return Object.entries(response.errors)
+          .map(([key, msgs]) => {
+            const msgStr = Array.isArray(msgs) ? msgs.join(', ') : msgs;
+            
+            // Skip field name for 'base' errors
+            if (key === 'base') return msgStr;
+
+            // Map backend keys to translation keys
+            const fieldMapping = {
+              email: 'auth.email',
+              password: 'auth.password',
+              password_confirmation: 'auth.confirmPassword',
+              first_name: 'auth.firstName',
+              last_name: 'auth.lastName',
+              phone_number: 'auth.phone'
+            };
+
+            const labelKey = fieldMapping[key] || `auth.${key}`;
+            const label = t(labelKey) !== labelKey ? t(labelKey) : (key.charAt(0).toUpperCase() + key.slice(1));
+            
+            return `${label} ${msgStr}`;
+          })
+          .join('. ');
+      } else if (typeof response.errors === 'string') {
+        return response.errors;
+      } else if (Array.isArray(response.errors)) {
+        return response.errors.join('. ');
+      }
+    }
+    return response.message || t('common.error') || 'Action failed';
+  };
+
   const login = async (email, password) => {
     try {
       const response = await authService.signIn(email, password);
@@ -57,12 +94,15 @@ export const AuthProvider = ({ children }) => {
         setUser(userData);
         return { success: true };
       }
-      return { success: false, error: response.message || 'Login failed' };
+      return { success: false, error: formatError(response) || 'Login failed' };
     } catch (error) {
       let errorMessage = 'Login failed';
       
       if (error.error === 'Network Error' || error.message?.includes('Network Error')) {
         errorMessage = error.message || 'Không thể kết nối đến server. Vui lòng kiểm tra lại URL API hoặc kết nối mạng.';
+      } else if (error.errors) {
+         // Handle errors object in catch block if api rejects with it
+         errorMessage = formatError({ errors: error.errors }); 
       } else if (error.message) {
         errorMessage = error.message;
       } else if (error.error) {
@@ -81,12 +121,14 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 'ok' || response.status === 'success') {
         return await login(userData.email, userData.password);
       }
-      return { success: false, error: response.message || 'Registration failed' };
+      return { success: false, error: formatError(response) || 'Registration failed' };
     } catch (error) {
       let errorMessage = 'Registration failed';
       
       if (error.error === 'Network Error' || error.message?.includes('Network Error')) {
         errorMessage = error.message || 'Không thể kết nối đến server. Vui lòng kiểm tra lại URL API hoặc kết nối mạng.';
+      } else if (error.errors) {
+         errorMessage = formatError({ errors: error.errors });
       } else if (error.message) {
         errorMessage = error.message;
       } else if (error.error) {

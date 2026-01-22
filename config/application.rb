@@ -1,6 +1,6 @@
-require_relative "boot"
+require_relative 'boot'
 
-require "rails/all"
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -29,5 +29,7 @@ module ReviewCompany
     config.autoload_paths -= Dir["#{config.root}/app/socket"]
     Rails.autoloaders.main.ignore("#{config.root}/app/socket")
     config.active_job.queue_adapter = :sidekiq
+    config.i18n.available_locales = %i[en vi]
+    config.i18n.default_locale = :vi
   end
 end
