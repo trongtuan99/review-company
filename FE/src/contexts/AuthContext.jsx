@@ -20,8 +20,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      const currentUser = authService.getCurrentUser();
-      if (currentUser && authService.isAuthenticated()) {
+      const currentUser = await authService.initFromStorage();
+      if (currentUser) {
         setUser(currentUser);
         // Refresh user data from backend to get latest role
         try {
@@ -33,7 +33,8 @@ export const AuthProvider = ({ children }) => {
               freshUser.role = response.data.role.role || response.data.role.name;
             }
             setUser(freshUser);
-            localStorage.setItem('user', JSON.stringify(freshUser));
+            // Update in memory and storage (optional, but good for consistency)
+            tokenManager.setUser(freshUser);
           }
         } catch (error) {
           console.error('Failed to refresh user on init:', error);
@@ -89,8 +90,7 @@ export const AuthProvider = ({ children }) => {
         if (userData.role && typeof userData.role === 'object') {
           userData.role = userData.role.role || userData.role.name;
         }
-        localStorage.setItem('access_token', userData.access_token);
-        localStorage.setItem('user', JSON.stringify(userData));
+        // localStorage is handled in authService.signIn via tokenManager/ZaloStorage
         setUser(userData);
         return { success: true };
       }
@@ -147,7 +147,8 @@ export const AuthProvider = ({ children }) => {
   const updateUser = (updatedData) => {
     const newUser = { ...user, ...updatedData };
     setUser(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
+    tokenManager.setUser(newUser);
+    // Ideally update Zalo Storage too
   };
 
   // Refresh user data from backend
@@ -158,7 +159,7 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 'ok' || response.status === 'success') {
         const freshUser = { ...user, ...response.data };
         setUser(freshUser);
-        localStorage.setItem('user', JSON.stringify(freshUser));
+        tokenManager.setUser(freshUser);
         return freshUser;
       }
     } catch (error) {

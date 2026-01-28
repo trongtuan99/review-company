@@ -1,0 +1,19 @@
+{
+  "app": {
+    "title": "Review Company",
+    "headerColor": "#ffffff",
+    "headerTitle": "Review Company",
+    "textColor": "black",
+    "leftButton": "back",
+    "statusBar": "normal",
+    "actionBarHidden": false
+  },
+  "debug": true,
+  "listCSS": [
+    "assets/index-DLVvtwz1.css"
+  ],
+  "listSyncJS": [
+    "assets/index-BdAQ6aCh.js"
+  ],
+  "listAsyncJS": []
+}

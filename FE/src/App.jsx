@@ -37,6 +37,14 @@ const queryClient = new QueryClient({
   },
 });
 
+const getBasename = () => {
+  if (typeof window !== 'undefined' && window.location.pathname.startsWith('/zapps/')) {
+    const matches = window.location.pathname.match(/^\/zapps\/[^/]+/);
+    return matches ? matches[0] : '/';
+  }
+  return '/';
+};
+
 function App() {
 
 
@@ -44,7 +52,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ConfigProvider>
-          <Router>
+          <Router basename={getBasename()}>
             <div className="app">
               <Routes>
                 {/* Admin Routes */}

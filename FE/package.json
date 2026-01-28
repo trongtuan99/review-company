@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "zmp:login": "zmp login",
+    "zmp:deploy": "zmp deploy",
+    "zmp:start": "zmp start"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.12",
@@ -18,7 +21,8 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^16.5.0",
     "react-router-dom": "^6.22.3",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "zmp-sdk": "^2.49.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -29,6 +33,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
-    "vite": "^5.2.11"
+    "vite": "^5.2.11",
+    "zmp-cli": "^4.0.1"
   }
 }

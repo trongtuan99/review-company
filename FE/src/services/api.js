@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { tokenManager } from './tokenManager';
 import { API_BASE_URL, getHeaders, DEFAULT_TENANT } from '../config/api';
 
 const apiClient = axios.create({
@@ -6,13 +7,14 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
+
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token');
-    let tenant = localStorage.getItem('tenant');
+    const token = tokenManager.getToken();
+    let tenant = tokenManager.getTenant();
     if (!tenant) {
       tenant = DEFAULT_TENANT;
-      localStorage.setItem('tenant', tenant);
+      tokenManager.setTenant(tenant);
     }
     
     config.headers = {
@@ -70,9 +72,9 @@ apiClient.interceptors.response.use(
     }
     
     if (error.response?.status === 401) {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      tokenManager.clear();
+      // Optionally redirect or handle logout state
+      // window.location.href = '/login'; // Navigation might need to be handled differently
     }
     
     return Promise.reject(error.response?.data || {
